@@ -10,28 +10,28 @@ export const QuickActions = () => {
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2">
         <Button 
-          className="flex items-center gap-2 bg-[#9b87f5] hover:bg-[#8b77e5] text-white h-10"
+          className="flex items-center gap-2 bg-[#9b87f5] hover:bg-[#8b77e5] text-white h-9 px-3 text-sm"
         >
           <Plus className="h-4 w-4" />
           Add Property
         </Button>
         <Button 
           variant="outline" 
-          className="flex items-center gap-2 text-gray-600 hover:text-[#9b87f5] hover:border-[#9b87f5] h-10"
+          className="flex items-center gap-2 text-[#9b87f5] border-[#E5DEFF] hover:bg-[#F8F7FE] hover:text-[#8b77e5] hover:border-[#8b77e5] h-9 px-3 text-sm"
         >
           <UserPlus className="h-4 w-4" />
           New Lead
         </Button>
         <Button 
           variant="outline" 
-          className="flex items-center gap-2 text-gray-600 hover:text-[#9b87f5] hover:border-[#9b87f5] h-10"
+          className="flex items-center gap-2 text-[#9b87f5] border-[#E5DEFF] hover:bg-[#F8F7FE] hover:text-[#8b77e5] hover:border-[#8b77e5] h-9 px-3 text-sm"
         >
           <Calendar className="h-4 w-4" />
           Schedule Viewing
         </Button>
         <Button 
           variant="outline" 
-          className="flex items-center gap-2 text-gray-600 hover:text-[#9b87f5] hover:border-[#9b87f5] h-10"
+          className="flex items-center gap-2 text-[#9b87f5] border-[#E5DEFF] hover:bg-[#F8F7FE] hover:text-[#8b77e5] hover:border-[#8b77e5] h-9 px-3 text-sm"
         >
           <Mail className="h-4 w-4" />
           Send Email
