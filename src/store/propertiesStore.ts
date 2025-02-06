@@ -13,6 +13,29 @@ interface PropertiesState {
   deleteProperty: (id: string) => Promise<void>;
 }
 
+const mapToDbFormat = (property: PropertyFormData) => ({
+  property_name: property.propertyName,
+  property_type: property.propertyType,
+  number_of_units: property.numberOfUnits,
+  address_line: property.addressLine,
+  district: property.district,
+  state: property.state,
+  country: property.country,
+  pincode: property.pincode,
+});
+
+const mapFromDbFormat = (dbProperty: any): PropertyFormData => ({
+  id: dbProperty.id,
+  propertyName: dbProperty.property_name,
+  propertyType: dbProperty.property_type,
+  numberOfUnits: dbProperty.number_of_units,
+  addressLine: dbProperty.address_line,
+  district: dbProperty.district,
+  state: dbProperty.state,
+  country: dbProperty.country,
+  pincode: dbProperty.pincode,
+});
+
 export const usePropertiesStore = create<PropertiesState>((set) => ({
   properties: [],
   isLoading: false,
@@ -27,7 +50,7 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      set({ properties: data || [] });
+      set({ properties: data.map(mapFromDbFormat) || [] });
     } catch (error) {
       set({ error: (error as Error).message });
       toast.error('Failed to fetch properties');
@@ -41,13 +64,13 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
     try {
       const { data, error } = await supabase
         .from('properties')
-        .insert([property])
+        .insert([mapToDbFormat(property)])
         .select()
         .single();
 
       if (error) throw error;
       set((state) => ({
-        properties: [data, ...state.properties],
+        properties: [mapFromDbFormat(data), ...state.properties],
       }));
       toast.success('Property added successfully');
     } catch (error) {
@@ -63,7 +86,7 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
     try {
       const { data, error } = await supabase
         .from('properties')
-        .update(property)
+        .update(mapToDbFormat(property))
         .eq('id', id)
         .select()
         .single();
@@ -71,7 +94,7 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
       if (error) throw error;
       set((state) => ({
         properties: state.properties.map((p) =>
-          p.id === id ? { ...data } : p
+          p.id === id ? mapFromDbFormat(data) : p
         ),
       }));
       toast.success('Property updated successfully');
