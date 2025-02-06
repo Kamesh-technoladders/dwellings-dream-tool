@@ -1,49 +1,71 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
-/**
- * Data structure for invoice statistics
- * @property {string} name - Category name (Paid, Overdue, Unpaid)
- * @property {number} value - Percentage value for the category
- * @property {string} color - HEX color code for the category
- */
-const data = [
-  { name: "Paid", value: 35.3, color: "#9b87f5" },
-  { name: "Overdue", value: 25.7, color: "#F30CBF" },
-  { name: "Unpaid", value: 39, color: "#D9D9D9" },
-];
+type TimeRange = 'last_7_days' | 'last_30_days' | 'last_quarter' | 'last_year' | 'ytd';
 
-/**
- * InvoiceChart Component
- * 
- * A donut chart component that displays invoice statistics with a clean, minimal design.
- * The chart shows the distribution of invoice statuses (Paid, Overdue, Unpaid) as percentages.
- * 
- * Features:
- * - Clean donut chart visualization
- * - Color-coded segments
- * - Legend with status labels and percentages
- * - Time period selector
- * - Responsive design
- * 
- * @component
- * @example
- * ```tsx
- * <InvoiceChart />
- * ```
- */
+// Simulated data fetching function
+const fetchInvoiceData = async (timeRange: TimeRange) => {
+  // In a real app, this would be an API call
+  const mockData = {
+    'last_7_days': [
+      { name: "Paid", value: 35.3, color: "#9b87f5" },
+      { name: "Overdue", value: 25.7, color: "#F30CBF" },
+      { name: "Unpaid", value: 39, color: "#D9D9D9" },
+    ],
+    'last_30_days': [
+      { name: "Paid", value: 45.3, color: "#9b87f5" },
+      { name: "Overdue", value: 15.7, color: "#F30CBF" },
+      { name: "Unpaid", value: 39, color: "#D9D9D9" },
+    ],
+    'last_quarter': [
+      { name: "Paid", value: 55.3, color: "#9b87f5" },
+      { name: "Overdue", value: 20.7, color: "#F30CBF" },
+      { name: "Unpaid", value: 24, color: "#D9D9D9" },
+    ],
+    'last_year': [
+      { name: "Paid", value: 60.3, color: "#9b87f5" },
+      { name: "Overdue", value: 10.7, color: "#F30CBF" },
+      { name: "Unpaid", value: 29, color: "#D9D9D9" },
+    ],
+    'ytd': [
+      { name: "Paid", value: 48.3, color: "#9b87f5" },
+      { name: "Overdue", value: 22.7, color: "#F30CBF" },
+      { name: "Unpaid", value: 29, color: "#D9D9D9" },
+    ],
+  };
+  
+  return mockData[timeRange];
+};
+
 export const InvoiceChart = () => {
+  const [timeRange, setTimeRange] = useState<TimeRange>('last_7_days');
+
+  const { data = [], isLoading } = useQuery({
+    queryKey: ['invoice-stats', timeRange],
+    queryFn: () => fetchInvoiceData(timeRange),
+  });
+
   return (
-    <Card className="w-[130%] border-0">
+    <Card className="w-full border-0">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Invoice statistics</CardTitle>
-        <select className="text-xs bg-transparent border-none outline-none text-muted-foreground hover:text-[#9b87f5] cursor-pointer">
-          <option>Last 7 days</option>
-          <option>Last 30 days</option>
-          <option>Last 3 months</option>
-        </select>
+        <Select value={timeRange} onValueChange={(value: TimeRange) => setTimeRange(value)}>
+          <SelectTrigger className="w-[140px] h-8 text-xs bg-transparent hover:text-[#9b87f5]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="last_7_days">Last 7 days</SelectItem>
+            <SelectItem value="last_30_days">Last 30 days</SelectItem>
+            <SelectItem value="last_quarter">Last Quarter</SelectItem>
+            <SelectItem value="last_year">Last Year</SelectItem>
+            <SelectItem value="ytd">Year to Date</SelectItem>
+          </SelectContent>
+        </Select>
       </CardHeader>
-      <CardContent className="relative h-[420px]">
+      <CardContent className="relative h-[300px]">
         <ResponsiveContainer width="100%" height="80%">
           <PieChart>
             <Pie
@@ -62,7 +84,7 @@ export const InvoiceChart = () => {
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-        <div className="flex justify-center gap-6 mt-4">
+        <div className="flex justify-center gap-6">
           {data.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
               <div 
