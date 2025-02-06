@@ -1,4 +1,4 @@
-import { TrendingUp, Users, DollarSign } from "lucide-react";
+import { Users, DollarSign } from "lucide-react";
 import { MetricsCard } from "@/components/MetricsCard";
 import { QuickActions } from "@/components/QuickActions";
 import { InvoiceChart } from "@/components/InvoiceChart";
@@ -15,13 +15,7 @@ const Index = () => {
           <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
           
           {/* Top Section: Metrics + Quick Actions */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
-            <MetricsCard
-              title="Active Listings"
-              value="89"
-              icon={TrendingUp}
-              trend={{ value: "+5%", positive: true }}
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
             <MetricsCard
               title="Total Leads"
               value="2,345"
