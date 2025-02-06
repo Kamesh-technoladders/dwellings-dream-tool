@@ -3,10 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Plus, UserPlus, Calendar } from "lucide-react";
 import { useState } from "react";
-import { PropertyForm } from "./PropertyForm";
+import { PropertyForm, PropertyFormData } from "./PropertyForm";
+import { PropertiesTable } from "./PropertiesTable";
 
 export const QuickActions = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [properties, setProperties] = useState<PropertyFormData[]>([]);
+
+  const handleSaveProperty = (data: PropertyFormData) => {
+    setProperties((prev) => [...prev, data]);
+  };
 
   return (
     <>
@@ -41,12 +47,19 @@ export const QuickActions = () => {
         </CardContent>
       </Card>
 
+      {properties.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Properties</h2>
+          <PropertiesTable properties={properties} />
+        </div>
+      )}
+
       <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>Add New Property</SheetTitle>
           </SheetHeader>
-          <PropertyForm onClose={() => setIsDrawerOpen(false)} />
+          <PropertyForm onClose={() => setIsDrawerOpen(false)} onSave={handleSaveProperty} />
         </SheetContent>
       </Sheet>
     </>

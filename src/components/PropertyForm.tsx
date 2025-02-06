@@ -1,13 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { toast } from "sonner";
+
+const propertyTypes = [
+  "Commercial Building",
+  "Apartment",
+  "Villa",
+  "Plots",
+  "Co-Working",
+] as const;
 
 const formSchema = z.object({
   propertyName: z.string().min(1, "Property name is required"),
+  propertyType: z.enum(propertyTypes, {
+    required_error: "Please select a property type",
+  }),
+  numberOfUnits: z.number().min(1, "Number of units must be at least 1"),
   addressLine: z.string().min(1, "Address is required"),
   district: z.string().min(1, "District is required"),
   state: z.string().min(1, "State is required"),
@@ -15,11 +28,15 @@ const formSchema = z.object({
   pincode: z.string().min(1, "Pincode is required"),
 });
 
-export function PropertyForm({ onClose }: { onClose: () => void }) {
-  const form = useForm<z.infer<typeof formSchema>>({
+export type PropertyFormData = z.infer<typeof formSchema>;
+
+export function PropertyForm({ onClose, onSave }: { onClose: () => void; onSave: (data: PropertyFormData) => void }) {
+  const form = useForm<PropertyFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       propertyName: "",
+      propertyType: "Commercial Building",
+      numberOfUnits: 1,
       addressLine: "",
       district: "",
       state: "",
@@ -28,8 +45,9 @@ export function PropertyForm({ onClose }: { onClose: () => void }) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  function onSubmit(values: PropertyFormData) {
+    onSave(values);
+    toast.success("Property saved successfully!");
     onClose();
   }
 
@@ -51,6 +69,49 @@ export function PropertyForm({ onClose }: { onClose: () => void }) {
 
         <FormField
           control={form.control}
+          name="propertyType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Property Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select property type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {propertyTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="numberOfUnits"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Number of Units</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  min="1"
+                  placeholder="Enter number of units"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="addressLine"
           render={({ field }) => (
             <FormItem>
@@ -62,57 +123,61 @@ export function PropertyForm({ onClose }: { onClose: () => void }) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="district"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>District</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter district" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="district"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>District</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter district" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="state"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>State</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter state" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>State</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter state" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <FormField
-          control={form.control}
-          name="country"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Country</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter country" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter country" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="pincode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Pincode</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter pincode" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="pincode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Pincode</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter pincode" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="flex justify-end gap-4">
           <Button type="button" variant="outline" onClick={onClose}>
