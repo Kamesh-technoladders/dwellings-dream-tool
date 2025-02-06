@@ -1,55 +1,26 @@
-import { PropertyForm, PropertyFormData } from "@/components/PropertyForm";
+import { useEffect } from "react";
 import { PropertiesTable } from "@/components/PropertiesTable";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
 import { usePropertiesStore } from "@/store/propertiesStore";
 
-const Properties = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { properties, addProperty } = usePropertiesStore();
+export default function Properties() {
+  const { properties, isLoading, error, fetchProperties } = usePropertiesStore();
 
-  const handleSaveProperty = (data: PropertyFormData) => {
-    addProperty(data);
-    setIsDrawerOpen(false);
-  };
+  useEffect(() => {
+    fetchProperties();
+  }, [fetchProperties]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full">
-        <AppSidebar />
-        <main className="flex-1 p-8">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold">Properties</h1>
-            <Button onClick={() => setIsDrawerOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Property
-            </Button>
-          </div>
-
-          {properties.length > 0 ? (
-            <PropertiesTable properties={properties} />
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              No properties added yet. Click the button above to add your first property.
-            </div>
-          )}
-
-          <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Add New Property</SheetTitle>
-              </SheetHeader>
-              <PropertyForm onClose={() => setIsDrawerOpen(false)} onSave={handleSaveProperty} />
-            </SheetContent>
-          </Sheet>
-        </main>
-      </div>
-    </SidebarProvider>
+    <div className="container mx-auto py-8">
+      <h1 className="text-2xl font-bold mb-6">Properties</h1>
+      <PropertiesTable properties={properties} />
+    </div>
   );
-};
-
-export default Properties;
+}

@@ -16,6 +16,7 @@ const propertyTypes = [
 ] as const;
 
 const formSchema = z.object({
+  id: z.string().optional(),
   propertyName: z.string().min(1, "Property name is required"),
   propertyType: z.enum(propertyTypes, {
     required_error: "Please select a property type",
@@ -30,10 +31,16 @@ const formSchema = z.object({
 
 export type PropertyFormData = z.infer<typeof formSchema>;
 
-export function PropertyForm({ onClose, onSave }: { onClose: () => void; onSave: (data: PropertyFormData) => void }) {
+interface PropertyFormProps {
+  onClose: () => void;
+  onSave: (data: PropertyFormData) => void;
+  initialData?: PropertyFormData;
+}
+
+export function PropertyForm({ onClose, onSave, initialData }: PropertyFormProps) {
   const form = useForm<PropertyFormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       propertyName: "",
       propertyType: "Commercial Building",
       numberOfUnits: 1,
@@ -47,7 +54,7 @@ export function PropertyForm({ onClose, onSave }: { onClose: () => void; onSave:
 
   function onSubmit(values: PropertyFormData) {
     onSave(values);
-    toast.success("Property saved successfully!");
+    toast.success(`Property ${initialData ? 'updated' : 'saved'} successfully!`);
     onClose();
   }
 
