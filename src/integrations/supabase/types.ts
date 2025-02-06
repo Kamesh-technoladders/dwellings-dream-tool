@@ -122,6 +122,98 @@ export type Database = {
           },
         ]
       }
+      organization_users: {
+        Row: {
+          created_at: string | null
+          id: string
+          organization_id: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          organization_id?: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          organization_id?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_users_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string
+          first_name: string | null
+          id: string
+          is_global_admin: boolean | null
+          last_name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email: string
+          first_name?: string | null
+          id: string
+          is_global_admin?: boolean | null
+          last_name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          is_global_admin?: boolean | null
+          last_name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       ProjectName: {
         Row: {
           created_at: string
@@ -256,10 +348,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_global_admin: {
+        Args: {
+          user_id: string
+        }
+        Returns: boolean
+      }
+      is_org_super_admin: {
+        Args: {
+          user_id: string
+          org_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       admin_role: "admin" | "manager"
+      user_role:
+        | "global_super_admin"
+        | "org_super_admin"
+        | "org_admin"
+        | "org_manager"
+        | "org_user"
     }
     CompositeTypes: {
       [_ in never]: never
