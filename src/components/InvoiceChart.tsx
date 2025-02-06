@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 const data = [
   { name: "Paid", value: 35.3, color: "#9b87f5" },
   { name: "Overdue", value: 25.7, color: "#F30CBF" },
-  { name: "Unpaid", value: 39, color: "#878787" },
+  { name: "Unpaid", value: 39, color: "#D9D9D9" },
 ];
 
 export const InvoiceChart = () => {
