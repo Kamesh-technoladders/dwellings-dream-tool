@@ -34,8 +34,8 @@ export const InvoiceChart = () => {
   return (
     <Card className="w-full border-0">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-base font-medium">Invoice statistics</CardTitle>
-        <select className="text-sm bg-transparent border-none outline-none text-muted-foreground">
+        <CardTitle className="text-sm font-medium">Invoice statistics</CardTitle>
+        <select className="text-xs bg-transparent border-none outline-none text-muted-foreground hover:text-[#9b87f5] cursor-pointer">
           <option>Last 7 days</option>
           <option>Last 30 days</option>
           <option>Last 3 months</option>
@@ -62,8 +62,8 @@ export const InvoiceChart = () => {
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-semibold">1.25</span>
-          <span className="text-sm text-muted-foreground">Invoice</span>
+          <span className="text-2xl font-semibold">1.25</span>
+          <span className="text-xs text-muted-foreground">Invoice</span>
         </div>
       </CardContent>
     </Card>
