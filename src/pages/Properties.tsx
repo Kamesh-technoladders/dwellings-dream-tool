@@ -6,13 +6,15 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import { usePropertiesStore } from "@/store/propertiesStore";
 
 const Properties = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [properties, setProperties] = useState<PropertyFormData[]>([]);
+  const { properties, addProperty } = usePropertiesStore();
 
   const handleSaveProperty = (data: PropertyFormData) => {
-    setProperties((prev) => [...prev, data]);
+    addProperty(data);
+    setIsDrawerOpen(false);
   };
 
   return (

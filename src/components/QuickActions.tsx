@@ -6,12 +6,15 @@ import { useState } from "react";
 import { PropertyForm, PropertyFormData } from "./PropertyForm";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { usePropertiesStore } from "@/store/propertiesStore";
 
 export const QuickActions = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
+  const addProperty = usePropertiesStore((state) => state.addProperty);
 
   const handleSaveProperty = (data: PropertyFormData) => {
+    addProperty(data);
     toast.success("Property saved successfully!");
     setIsDrawerOpen(false);
     navigate("/properties");
