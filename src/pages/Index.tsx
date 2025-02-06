@@ -1,8 +1,8 @@
 import { Building2, TrendingUp, Users, DollarSign } from "lucide-react";
-import { PropertyCard } from "@/components/PropertyCard";
 import { MetricsCard } from "@/components/MetricsCard";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { QuickActions } from "@/components/QuickActions";
+import { InvoiceChart } from "@/components/InvoiceChart";
 
 const Index = () => {
   return (
@@ -38,27 +38,9 @@ const Index = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Properties Section */}
-        <div className="lg:col-span-2 space-y-6">
-          <h2 className="text-xl font-semibold">Recent Properties</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <PropertyCard
-              address="123 Main Street, City"
-              price="$450,000"
-              beds={3}
-              baths={2}
-              sqft={2100}
-              image="/placeholder.svg"
-            />
-            <PropertyCard
-              address="456 Oak Avenue, Town"
-              price="$675,000"
-              beds={4}
-              baths={3}
-              sqft={2800}
-              image="/placeholder.svg"
-            />
-          </div>
+        {/* Chart Section */}
+        <div className="lg:col-span-2">
+          <InvoiceChart />
         </div>
 
         {/* Sidebar */}
