@@ -143,6 +143,51 @@ export type Database = {
         }
         Relationships: []
       }
+      properties: {
+        Row: {
+          address_line: string
+          country: string
+          created_at: string
+          district: string
+          id: string
+          number_of_units: number
+          pincode: string
+          property_name: string
+          property_type: string
+          state: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address_line: string
+          country: string
+          created_at?: string
+          district: string
+          id?: string
+          number_of_units: number
+          pincode: string
+          property_name: string
+          property_type: string
+          state: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address_line?: string
+          country?: string
+          created_at?: string
+          district?: string
+          id?: string
+          number_of_units?: number
+          pincode?: string
+          property_name?: string
+          property_type?: string
+          state?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       SpaceDetail: {
         Row: {
           created_at: string
