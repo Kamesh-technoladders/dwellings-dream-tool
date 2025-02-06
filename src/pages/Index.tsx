@@ -38,9 +38,13 @@ const Index = () => {
           </div>
 
           {/* Charts Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <InvoiceChart />
-            <ProductSalesChart />
+          <div className="grid grid-cols-10 gap-8">
+            <div className="col-span-3">
+              <InvoiceChart />
+            </div>
+            <div className="col-span-7">
+              <ProductSalesChart />
+            </div>
           </div>
         </main>
       </div>
