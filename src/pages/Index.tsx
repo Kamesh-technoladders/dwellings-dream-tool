@@ -3,6 +3,7 @@ import { MetricsCard } from "@/components/MetricsCard";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { QuickActions } from "@/components/QuickActions";
 import { InvoiceChart } from "@/components/InvoiceChart";
+import { ProductSalesChart } from "@/components/ProductSalesChart";
 
 const Index = () => {
   return (
@@ -38,9 +39,10 @@ const Index = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Chart Section */}
-        <div className="lg:col-span-2">
+        {/* Charts Section */}
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
           <InvoiceChart />
+          <ProductSalesChart />
         </div>
 
         {/* Sidebar */}
