@@ -159,23 +159,32 @@ export type Database = {
       }
       organizations: {
         Row: {
+          address: string | null
           created_at: string | null
+          email: string | null
           id: string
           name: string
+          phone: string | null
           status: string
           updated_at: string | null
         }
         Insert: {
+          address?: string | null
           created_at?: string | null
+          email?: string | null
           id?: string
           name: string
+          phone?: string | null
           status?: string
           updated_at?: string | null
         }
         Update: {
+          address?: string | null
           created_at?: string | null
+          email?: string | null
           id?: string
           name?: string
+          phone?: string | null
           status?: string
           updated_at?: string | null
         }
