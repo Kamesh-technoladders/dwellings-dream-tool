@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,7 +35,13 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
     try {
       const { error } = await supabase
         .from("organizations")
-        .insert([data]);
+        .insert({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          address: data.address,
+          status: 'active' // Set default status
+        });
 
       if (error) throw error;
 
@@ -59,6 +65,7 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
               <FormControl>
                 <Input placeholder="Enter organization name" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -72,6 +79,7 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
               <FormControl>
                 <Input type="email" placeholder="Enter email address" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -85,6 +93,7 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
               <FormControl>
                 <Input placeholder="Enter phone number" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -98,6 +107,7 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
               <FormControl>
                 <Input placeholder="Enter address" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
