@@ -79,9 +79,13 @@ export function PropertyForm({ onClose, onSave }: { onClose: () => void; onSave:
                     <SelectValue placeholder="Select property type" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="bg-white border shadow-lg z-50">
                   {propertyTypes.map((type) => (
-                    <SelectItem key={type} value={type}>
+                    <SelectItem 
+                      key={type} 
+                      value={type}
+                      className="hover:bg-primary hover:text-white transition-colors"
+                    >
                       {type}
                     </SelectItem>
                   ))}
