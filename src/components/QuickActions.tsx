@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, UserPlus, Calendar, Mail } from "lucide-react";
+import { Plus, UserPlus, Calendar } from "lucide-react";
 
 export const QuickActions = () => {
   return (
@@ -8,7 +8,7 @@ export const QuickActions = () => {
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-white">Quick Actions</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4">
+      <CardContent className="grid grid-cols-3 gap-4">
         <Button 
           className="flex items-center justify-center w-full bg-[#64748b] hover:bg-[#64748b]/90 text-white h-9 px-3 text-sm"
         >
@@ -28,13 +28,6 @@ export const QuickActions = () => {
         >
           <Calendar className="h-4 w-4 mr-2" />
           Schedule Viewing
-        </Button>
-        <Button 
-          variant="outline" 
-          className="flex items-center justify-center w-full bg-[#64748b] hover:bg-[#64748b]/90 text-white border-0 h-9 px-3 text-sm"
-        >
-          <Mail className="h-4 w-4 mr-2" />
-          Send Email
         </Button>
       </CardContent>
     </Card>

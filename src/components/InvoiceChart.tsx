@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 
 const data = [
-  { name: "Paid", value: 35.3, color: "#1A1F2C" },
-  { name: "Overdue", value: 25.7, color: "#E2E8F0" },
-  { name: "Unpaid", value: 39, color: "#F8FAFC" },
+  { name: "Paid", value: 35.3, color: "#9b87f5" },
+  { name: "Overdue", value: 25.7, color: "#64748b" },
+  { name: "Unpaid", value: 39, color: "#8E9196" },
 ];
 
 export const InvoiceChart = () => {

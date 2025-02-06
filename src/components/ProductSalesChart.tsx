@@ -54,8 +54,8 @@ export const ProductSalesChart = () => {
                 fontSize: '12px'
               }}
             />
-            <Bar dataKey="sales" fill="#1A1F2C" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="cost" fill="#E2E8F0" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="sales" fill="#9b87f5" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="cost" fill="#64748b" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
