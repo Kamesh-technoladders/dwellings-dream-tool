@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -66,7 +67,9 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
           email: data.email,
           phone: data.phone,
           address: data.address,
-          status: 'active'
+          status: 'active',
+          last_status_change: new Date().toISOString(),
+          status_changed_by: session.user.id
         });
 
       if (error) throw error;

@@ -122,6 +122,44 @@ export type Database = {
           },
         ]
       }
+      organization_audit_logs: {
+        Row: {
+          changed_by: string
+          created_at: string | null
+          id: string
+          new_status: string
+          old_status: string | null
+          organization_id: string
+          reason: string | null
+        }
+        Insert: {
+          changed_by: string
+          created_at?: string | null
+          id?: string
+          new_status: string
+          old_status?: string | null
+          organization_id: string
+          reason?: string | null
+        }
+        Update: {
+          changed_by?: string
+          created_at?: string | null
+          id?: string
+          new_status?: string
+          old_status?: string | null
+          organization_id?: string
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_audit_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organization_users: {
         Row: {
           created_at: string | null
@@ -163,9 +201,12 @@ export type Database = {
           created_at: string | null
           email: string | null
           id: string
+          last_status_change: string | null
           name: string
           phone: string | null
-          status: string
+          status: Database["public"]["Enums"]["organization_status"]
+          status_changed_by: string | null
+          status_reason: string | null
           updated_at: string | null
         }
         Insert: {
@@ -173,9 +214,12 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           id?: string
+          last_status_change?: string | null
           name: string
           phone?: string | null
-          status?: string
+          status?: Database["public"]["Enums"]["organization_status"]
+          status_changed_by?: string | null
+          status_reason?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -183,9 +227,12 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           id?: string
+          last_status_change?: string | null
           name?: string
           phone?: string | null
-          status?: string
+          status?: Database["public"]["Enums"]["organization_status"]
+          status_changed_by?: string | null
+          status_reason?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -373,6 +420,7 @@ export type Database = {
     }
     Enums: {
       admin_role: "admin" | "manager"
+      organization_status: "active" | "inactive" | "restricted"
       user_role:
         | "global_super_admin"
         | "org_super_admin"
