@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, "Organization name is required"),
@@ -21,6 +22,8 @@ interface OrganizationFormProps {
 }
 
 export function OrganizationForm({ onClose }: OrganizationFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,8 +34,31 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
     },
   });
 
+  // Check authentication status when component mounts
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("You must be logged in to perform this action");
+        onClose();
+      }
+    };
+    
+    checkAuth();
+  }, [onClose]);
+
   const onSubmit = async (data: OrganizationFormData) => {
     try {
+      setIsLoading(true);
+      
+      // Get current session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast.error("You must be logged in to create an organization");
+        return;
+      }
+
       const { error } = await supabase
         .from("organizations")
         .insert({
@@ -40,16 +66,18 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
           email: data.email,
           phone: data.phone,
           address: data.address,
-          status: 'active' // Set default status
+          status: 'active'
         });
 
       if (error) throw error;
 
       toast.success("Organization created successfully!");
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating organization:", error);
-      toast.error("Failed to create organization");
+      toast.error(error.message || "Failed to create organization");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -113,10 +141,12 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
         />
 
         <div className="flex justify-end gap-4 pt-4">
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="submit">Create Organization</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Creating..." : "Create Organization"}
+          </Button>
         </div>
       </form>
     </Form>
