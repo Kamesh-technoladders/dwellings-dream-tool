@@ -1,36 +1,38 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
+/**
+ * Data structure for invoice statistics
+ * @property {string} name - Category name (Paid, Overdue, Unpaid)
+ * @property {number} value - Percentage value for the category
+ * @property {string} color - HEX color code for the category
+ */
 const data = [
   { name: "Paid", value: 35.3, color: "#9b87f5" },
   { name: "Overdue", value: 25.7, color: "#F30CBF" },
   { name: "Unpaid", value: 39, color: "#D9D9D9" },
 ];
 
+/**
+ * InvoiceChart Component
+ * 
+ * A donut chart component that displays invoice statistics with a clean, minimal design.
+ * The chart shows the distribution of invoice statuses (Paid, Overdue, Unpaid) as percentages.
+ * 
+ * Features:
+ * - Clean donut chart visualization
+ * - Color-coded segments
+ * - Legend with status labels and percentages
+ * - Time period selector
+ * - Responsive design
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <InvoiceChart />
+ * ```
+ */
 export const InvoiceChart = () => {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
-
-  const renderCustomizedLabel = (props: any) => {
-    const { cx, cy, midAngle, innerRadius, outerRadius, value, name } = props;
-    const RADIAN = Math.PI / 180;
-    const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="#64748b"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-        className="text-xs"
-      >
-        {`${name} (${value}%)`}
-      </text>
-    );
-  };
-
   return (
     <Card className="w-[130%] border-0">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -53,8 +55,6 @@ export const InvoiceChart = () => {
               cornerRadius={6}
               paddingAngle={2}
               dataKey="value"
-              label={renderCustomizedLabel}
-              labelLine={false}
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
@@ -62,10 +62,6 @@ export const InvoiceChart = () => {
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-semibold">1.25</span>
-          <span className="text-sm text-muted-foreground">Invoice</span>
-        </div>
         <div className="flex justify-center gap-6 mt-4">
           {data.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
