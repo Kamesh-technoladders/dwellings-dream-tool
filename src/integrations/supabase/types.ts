@@ -122,6 +122,48 @@ export type Database = {
           },
         ]
       }
+      organization_activities: {
+        Row: {
+          activity_type: string
+          created_at: string | null
+          description: string
+          id: string
+          organization_id: string
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string | null
+          description: string
+          id?: string
+          organization_id: string
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          organization_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_organization"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organization_audit_logs: {
         Row: {
           changed_by: string
@@ -153,6 +195,48 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "organization_audit_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_metrics: {
+        Row: {
+          active_properties: number | null
+          id: string
+          last_updated: string | null
+          organization_id: string
+          total_properties: number | null
+          total_users: number | null
+        }
+        Insert: {
+          active_properties?: number | null
+          id?: string
+          last_updated?: string | null
+          organization_id: string
+          total_properties?: number | null
+          total_users?: number | null
+        }
+        Update: {
+          active_properties?: number | null
+          id?: string
+          last_updated?: string | null
+          organization_id?: string
+          total_properties?: number | null
+          total_users?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_organization"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_metrics_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
