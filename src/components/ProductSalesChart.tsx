@@ -154,19 +154,19 @@ export const ProductSalesChart = () => {
               <Filter className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-white">
-            <DropdownMenuLabel>View</DropdownMenuLabel>
+          <DropdownMenuContent className="bg-white w-48">
+            <DropdownMenuLabel className="py-1 text-sm">View</DropdownMenuLabel>
             <DropdownMenuRadioGroup value={view} onValueChange={(v: ViewType) => setView(v)}>
-              <DropdownMenuRadioItem value="monthly" className="hover:bg-primary hover:text-white transition-colors">Monthly</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="quarterly" className="hover:bg-primary hover:text-white transition-colors">Quarterly</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="yearly" className="hover:bg-primary hover:text-white transition-colors">Yearly</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="monthly" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Monthly</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="quarterly" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Quarterly</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="yearly" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Yearly</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel>Metric</DropdownMenuLabel>
+            <DropdownMenuLabel className="py-1 text-sm">Metric</DropdownMenuLabel>
             <DropdownMenuRadioGroup value={metric} onValueChange={(v: MetricType) => setMetric(v)}>
-              <DropdownMenuRadioItem value="revenue_cost" className="hover:bg-primary hover:text-white transition-colors">Revenue vs Cost</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="growth" className="hover:bg-primary hover:text-white transition-colors">Growth Trend</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="top_products" className="hover:bg-primary hover:text-white transition-colors">Top Products</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="revenue_cost" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Revenue vs Cost</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="growth" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Growth Trend</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="top_products" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Top Products</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
