@@ -32,7 +32,7 @@ export const InvoiceChart = () => {
   };
 
   return (
-    <Card className="w-[140%] border-0">
+    <Card className="w-[130%] border-0">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Invoice statistics</CardTitle>
         <select className="text-xs bg-transparent border-none outline-none text-muted-foreground hover:text-[#9b87f5] cursor-pointer">
@@ -42,14 +42,15 @@ export const InvoiceChart = () => {
         </select>
       </CardHeader>
       <CardContent className="relative h-[420px]">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="80%">
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={84}
-              outerRadius={112}
+              innerRadius={60}
+              outerRadius={80}
+              cornerRadius={6}
               paddingAngle={2}
               dataKey="value"
               label={renderCustomizedLabel}
@@ -64,6 +65,19 @@ export const InvoiceChart = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-3xl font-semibold">1.25</span>
           <span className="text-sm text-muted-foreground">Invoice</span>
+        </div>
+        <div className="flex justify-center gap-6 mt-4">
+          {data.map((item, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <div 
+                className="w-3 h-3 rounded-sm" 
+                style={{ backgroundColor: item.color }}
+              />
+              <span className="text-sm text-muted-foreground">
+                {item.name} ({item.value}%)
+              </span>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>
