@@ -22,6 +22,7 @@ const mapToDbFormat = (property: PropertyFormData) => ({
   state: property.state,
   country: property.country,
   pincode: property.pincode,
+  user_id: supabase.auth.getUser().then(({ data }) => data.user?.id), // Set user_id from authenticated user
 });
 
 const mapFromDbFormat = (dbProperty: any): PropertyFormData => ({
@@ -44,9 +45,16 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
   fetchProperties: async () => {
     set({ isLoading: true, error: null });
     try {
+      const { data: session } = await supabase.auth.getSession();
+      
+      if (!session?.session?.user) {
+        throw new Error('User not authenticated');
+      }
+
       const { data, error } = await supabase
         .from('properties')
         .select('*')
+        .eq('user_id', session.session.user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -62,9 +70,15 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
   addProperty: async (property) => {
     set({ isLoading: true, error: null });
     try {
+      const { data: session } = await supabase.auth.getSession();
+      
+      if (!session?.session?.user) {
+        throw new Error('User not authenticated');
+      }
+
       const { data, error } = await supabase
         .from('properties')
-        .insert([mapToDbFormat(property)])
+        .insert([{ ...mapToDbFormat(property), user_id: session.session.user.id }])
         .select()
         .single();
 
@@ -84,10 +98,17 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
   updateProperty: async (id, property) => {
     set({ isLoading: true, error: null });
     try {
+      const { data: session } = await supabase.auth.getSession();
+      
+      if (!session?.session?.user) {
+        throw new Error('User not authenticated');
+      }
+
       const { data, error } = await supabase
         .from('properties')
-        .update(mapToDbFormat(property))
+        .update({ ...mapToDbFormat(property), user_id: session.session.user.id })
         .eq('id', id)
+        .eq('user_id', session.session.user.id)
         .select()
         .single();
 
@@ -109,10 +130,17 @@ export const usePropertiesStore = create<PropertiesState>((set) => ({
   deleteProperty: async (id) => {
     set({ isLoading: true, error: null });
     try {
+      const { data: session } = await supabase.auth.getSession();
+      
+      if (!session?.session?.user) {
+        throw new Error('User not authenticated');
+      }
+
       const { error } = await supabase
         .from('properties')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .eq('user_id', session.session.user.id);
 
       if (error) throw error;
       set((state) => ({
