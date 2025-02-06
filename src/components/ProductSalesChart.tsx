@@ -149,24 +149,24 @@ export const ProductSalesChart = () => {
             <Button 
               variant="outline" 
               size="icon"
-              className="h-8 w-8 hover:text-[#9b87f5] hover:border-[#9b87f5]"
+              className="h-8 w-8 hover:text-primary hover:border-primary bg-white"
             >
               <Filter className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
+          <DropdownMenuContent className="bg-white">
             <DropdownMenuLabel>View</DropdownMenuLabel>
             <DropdownMenuRadioGroup value={view} onValueChange={(v: ViewType) => setView(v)}>
-              <DropdownMenuRadioItem value="monthly">Monthly</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="quarterly">Quarterly</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="yearly">Yearly</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="monthly" className="hover:bg-primary hover:text-white transition-colors">Monthly</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="quarterly" className="hover:bg-primary hover:text-white transition-colors">Quarterly</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="yearly" className="hover:bg-primary hover:text-white transition-colors">Yearly</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Metric</DropdownMenuLabel>
             <DropdownMenuRadioGroup value={metric} onValueChange={(v: MetricType) => setMetric(v)}>
-              <DropdownMenuRadioItem value="revenue_cost">Revenue vs Cost</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="growth">Growth Trend</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="top_products">Top Products</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="revenue_cost" className="hover:bg-primary hover:text-white transition-colors">Revenue vs Cost</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="growth" className="hover:bg-primary hover:text-white transition-colors">Growth Trend</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="top_products" className="hover:bg-primary hover:text-white transition-colors">Top Products</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>

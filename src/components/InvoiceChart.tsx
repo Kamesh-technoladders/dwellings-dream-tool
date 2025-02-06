@@ -53,15 +53,15 @@ export const InvoiceChart = () => {
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Invoice statistics</CardTitle>
         <Select value={timeRange} onValueChange={(value: TimeRange) => setTimeRange(value)}>
-          <SelectTrigger className="w-[140px] h-8 text-xs bg-transparent hover:text-[#9b87f5]">
+          <SelectTrigger className="w-[140px] h-8 text-xs bg-white hover:bg-primary hover:text-white transition-colors">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="last_7_days">Last 7 days</SelectItem>
-            <SelectItem value="last_30_days">Last 30 days</SelectItem>
-            <SelectItem value="last_quarter">Last Quarter</SelectItem>
-            <SelectItem value="last_year">Last Year</SelectItem>
-            <SelectItem value="ytd">Year to Date</SelectItem>
+          <SelectContent className="bg-white">
+            <SelectItem value="last_7_days" className="hover:bg-primary hover:text-white transition-colors">Last 7 days</SelectItem>
+            <SelectItem value="last_30_days" className="hover:bg-primary hover:text-white transition-colors">Last 30 days</SelectItem>
+            <SelectItem value="last_quarter" className="hover:bg-primary hover:text-white transition-colors">Last Quarter</SelectItem>
+            <SelectItem value="last_year" className="hover:bg-primary hover:text-white transition-colors">Last Year</SelectItem>
+            <SelectItem value="ytd" className="hover:bg-primary hover:text-white transition-colors">Year to Date</SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
