@@ -55,7 +55,7 @@ export const ProductSalesChart = () => {
               }}
             />
             <Bar dataKey="sales" fill="#9b87f5" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="cost" fill="#64748b" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="cost" fill="#878787" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
