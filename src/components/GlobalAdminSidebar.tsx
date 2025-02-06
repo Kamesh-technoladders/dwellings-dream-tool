@@ -1,3 +1,4 @@
+
 import {
   LayoutDashboard,
   Building2,
@@ -16,6 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
   {
@@ -51,6 +53,8 @@ const menuItems = [
 ];
 
 export function GlobalAdminSidebar() {
+  const location = useLocation();
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -60,11 +64,14 @@ export function GlobalAdminSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-2">
+                  <SidebarMenuButton
+                    asChild
+                    className={location.pathname === item.url ? "bg-accent" : ""}
+                  >
+                    <Link to={item.url} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

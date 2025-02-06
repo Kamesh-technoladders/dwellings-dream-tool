@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import Properties from "./pages/Properties";
+import Organizations from "./pages/Organizations";
+import OrganizationDetails from "./pages/OrganizationDetails";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 
@@ -55,6 +58,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Index />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizations"
+              element={
+                <ProtectedRoute>
+                  <Organizations />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizations/:id"
+              element={
+                <ProtectedRoute>
+                  <OrganizationDetails />
                 </ProtectedRoute>
               }
             />

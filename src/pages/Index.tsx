@@ -1,3 +1,4 @@
+
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { GlobalAdminSidebar } from "@/components/GlobalAdminSidebar";
 import { GlobalAdminMetrics } from "@/components/GlobalAdminMetrics";
@@ -32,6 +33,6 @@ const Index = () => {
       </div>
     </SidebarProvider>
   );
-};
+}
 
 export default Index;
