@@ -56,12 +56,12 @@ export const InvoiceChart = () => {
           <SelectTrigger className="w-[140px] h-8 text-xs bg-white hover:bg-primary hover:text-white transition-colors">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-white">
-            <SelectItem value="last_7_days" className="hover:bg-primary hover:text-white transition-colors">Last 7 days</SelectItem>
-            <SelectItem value="last_30_days" className="hover:bg-primary hover:text-white transition-colors">Last 30 days</SelectItem>
-            <SelectItem value="last_quarter" className="hover:bg-primary hover:text-white transition-colors">Last Quarter</SelectItem>
-            <SelectItem value="last_year" className="hover:bg-primary hover:text-white transition-colors">Last Year</SelectItem>
-            <SelectItem value="ytd" className="hover:bg-primary hover:text-white transition-colors">Year to Date</SelectItem>
+          <SelectContent className="bg-white w-[140px]">
+            <SelectItem value="last_7_days" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Last 7 days</SelectItem>
+            <SelectItem value="last_30_days" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Last 30 days</SelectItem>
+            <SelectItem value="last_quarter" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Last Quarter</SelectItem>
+            <SelectItem value="last_year" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Last Year</SelectItem>
+            <SelectItem value="ytd" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Year to Date</SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
