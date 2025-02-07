@@ -122,6 +122,41 @@ export type Database = {
           },
         ]
       }
+      invoices: {
+        Row: {
+          amount: number
+          created_at: string | null
+          due_date: string | null
+          id: string
+          organization_id: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id: string
+          status: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organization_activities: {
         Row: {
           activity_type: string
@@ -321,6 +356,44 @@ export type Database = {
         }
         Relationships: []
       }
+      product_metrics: {
+        Row: {
+          created_at: string | null
+          id: string
+          measurement_date: string
+          organization_id: string
+          product_name: string
+          revenue: number | null
+          units_sold: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          measurement_date: string
+          organization_id: string
+          product_name: string
+          revenue?: number | null
+          units_sold?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          measurement_date?: string
+          organization_id?: string
+          product_name?: string
+          revenue?: number | null
+          units_sold?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -419,6 +492,44 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      sales_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          organization_id: string
+          product_id: string | null
+          transaction_date: string | null
+          transaction_type: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          organization_id: string
+          product_id?: string | null
+          transaction_date?: string | null
+          transaction_type: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          organization_id?: string
+          product_id?: string | null
+          transaction_date?: string | null
+          transaction_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_transactions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       SpaceDetail: {
         Row: {

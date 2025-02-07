@@ -5,6 +5,10 @@ import { Building2, Users, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { useToast } from "@/components/ui/use-toast";
+import { ProductSalesChart } from "@/components/ProductSalesChart";
+import { RevenueChart } from "@/components/RevenueChart";
+import { InvoiceChart } from "@/components/InvoiceChart";
+import { DateRangeFilter } from "@/components/DateRangeFilter";
 
 export function OsaDashboard() {
   const [metrics, setMetrics] = useState({
@@ -14,6 +18,8 @@ export function OsaDashboard() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -79,6 +85,11 @@ export function OsaDashboard() {
     return () => clearInterval(interval);
   }, [toast]);
 
+  const handleDateChange = (start: Date | undefined, end: Date | undefined) => {
+    setStartDate(start);
+    setEndDate(end);
+  };
+
   if (loading) {
     return (
       <div className="space-y-8">
@@ -102,6 +113,8 @@ export function OsaDashboard() {
 
   return (
     <div className="space-y-8">
+      <DateRangeFilter onDateChange={handleDateChange} />
+
       <div className="grid gap-4 md:grid-cols-3">
         <MetricsCard
           title="Total Properties"
@@ -120,9 +133,15 @@ export function OsaDashboard() {
         />
       </div>
 
-      <div className="w-full">
+      <div className="grid gap-4 md:grid-cols-2">
+        <ProductSalesChart />
+        <RevenueChart startDate={startDate} endDate={endDate} />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <InvoiceChart />
         <ActivityFeed />
       </div>
     </div>
   );
-}
+};
