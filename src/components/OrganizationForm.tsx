@@ -37,13 +37,13 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[80vh] overflow-y-auto px-1">
+        <div className="space-y-3">
           <OrganizationBasicFields form={form} />
           <AddressFields form={form} />
         </div>
 
-        <div className="flex justify-end gap-4 pt-4">
+        <div className="flex justify-end gap-4 pt-2">
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
