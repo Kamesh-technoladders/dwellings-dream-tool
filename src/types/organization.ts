@@ -9,4 +9,9 @@ export interface OrganizationFormData {
   district: string;
   state: string;
   pincode: string;
+  subscription_status?: 'active' | 'inactive' | 'trial' | 'expired';
+  subscription_type?: 'basic' | 'premium' | 'enterprise';
+  subscription_start_date?: string;
+  subscription_end_date?: string;
 }
+

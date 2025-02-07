@@ -8,6 +8,7 @@ import { OrganizationFormData } from "@/types/organization";
 import { useCreateOrganization } from "@/hooks/useCreateOrganization";
 import { OrganizationBasicFields } from "./forms/OrganizationBasicFields";
 import { AddressFields } from "./forms/AddressFields";
+import { SubscriptionFields } from "./forms/SubscriptionFields";
 
 interface OrganizationFormProps {
   onClose: () => void;
@@ -29,6 +30,10 @@ export function OrganizationForm({ onClose, initialData, onSubmit, mode = 'creat
       district: "",
       state: "",
       pincode: "",
+      subscription_status: "inactive",
+      subscription_type: undefined,
+      subscription_start_date: undefined,
+      subscription_end_date: undefined,
     },
   });
 
@@ -48,6 +53,7 @@ export function OrganizationForm({ onClose, initialData, onSubmit, mode = 'creat
         <div className="space-y-3">
           <OrganizationBasicFields form={form} />
           <AddressFields form={form} />
+          <SubscriptionFields form={form} />
         </div>
 
         <div className="flex justify-end gap-4 pt-2">
@@ -68,3 +74,4 @@ export function OrganizationForm({ onClose, initialData, onSubmit, mode = 'creat
     </Form>
   );
 }
+

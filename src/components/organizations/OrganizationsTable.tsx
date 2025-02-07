@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DeleteOrganizationDialog } from "./DeleteOrganizationDialog";
 import { EditOrganizationDialog } from "./EditOrganizationDialog";
 import { OrganizationFormData } from "@/types/organization";
+import { Badge } from "@/components/ui/badge";
 
 interface OrganizationsTableProps {
   organizations: any[];
@@ -43,6 +44,19 @@ export const OrganizationsTable = ({
   setOrganizationToDelete,
   isDeleting,
 }: OrganizationsTableProps) => {
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-500';
+      case 'trial':
+        return 'bg-blue-500';
+      case 'expired':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -54,6 +68,7 @@ export const OrganizationsTable = ({
             <TableHead>Address</TableHead>
             <TableHead>City</TableHead>
             <TableHead>District</TableHead>
+            <TableHead>Subscription</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -61,7 +76,7 @@ export const OrganizationsTable = ({
           {isLoading ? (
             Array.from({ length: 3 }).map((_, index) => (
               <TableRow key={index}>
-                {Array.from({ length: 7 }).map((_, cellIndex) => (
+                {Array.from({ length: 8 }).map((_, cellIndex) => (
                   <TableCell key={cellIndex}>
                     <Skeleton className="h-4 w-[100px]" />
                   </TableCell>
@@ -70,7 +85,7 @@ export const OrganizationsTable = ({
             ))
           ) : organizations?.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-4">
+              <TableCell colSpan={8} className="text-center py-4">
                 No organizations found
               </TableCell>
             </TableRow>
@@ -83,6 +98,18 @@ export const OrganizationsTable = ({
                 <TableCell>{org.address_line1}</TableCell>
                 <TableCell>{org.city}</TableCell>
                 <TableCell>{org.district}</TableCell>
+                <TableCell>
+                  <div className="flex flex-col gap-1">
+                    <Badge className={getStatusColor(org.subscription_status)}>
+                      {org.subscription_status}
+                    </Badge>
+                    {org.subscription_type && (
+                      <span className="text-xs text-gray-600">
+                        {org.subscription_type}
+                      </span>
+                    )}
+                  </div>
+                </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <EditOrganizationDialog
@@ -99,6 +126,10 @@ export const OrganizationsTable = ({
                         district: "",
                         state: "",
                         pincode: "",
+                        subscription_status: "inactive",
+                        subscription_type: undefined,
+                        subscription_start_date: undefined,
+                        subscription_end_date: undefined,
                       }}
                       onEdit={() => onEdit(org)}
                     />
@@ -119,3 +150,4 @@ export const OrganizationsTable = ({
     </div>
   );
 };
+

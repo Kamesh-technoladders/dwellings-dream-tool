@@ -484,6 +484,10 @@ export type Database = {
           state: string | null
           status: Database["public"]["Enums"]["organization_status"]
           status_reason: string | null
+          subscription_end_date: string | null
+          subscription_start_date: string | null
+          subscription_status: string
+          subscription_type: string | null
           updated_at: string | null
         }
         Insert: {
@@ -502,6 +506,10 @@ export type Database = {
           state?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
           status_reason?: string | null
+          subscription_end_date?: string | null
+          subscription_start_date?: string | null
+          subscription_status?: string
+          subscription_type?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -520,6 +528,10 @@ export type Database = {
           state?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
           status_reason?: string | null
+          subscription_end_date?: string | null
+          subscription_start_date?: string | null
+          subscription_status?: string
+          subscription_type?: string | null
           updated_at?: string | null
         }
         Relationships: []

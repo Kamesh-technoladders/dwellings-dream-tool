@@ -14,4 +14,9 @@ export const organizationFormSchema = z.object({
   district: z.string().min(1, "District is required"),
   state: z.string().min(1, "State is required"),
   pincode: z.string().min(1, "Pincode is required"),
+  subscription_status: z.enum(['active', 'inactive', 'trial', 'expired']).optional(),
+  subscription_type: z.enum(['basic', 'premium', 'enterprise']).optional(),
+  subscription_start_date: z.string().optional(),
+  subscription_end_date: z.string().optional(),
 });
+

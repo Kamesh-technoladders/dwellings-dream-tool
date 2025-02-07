@@ -32,6 +32,10 @@ export const useOrganizations = () => {
           district,
           pincode,
           status,
+          subscription_status,
+          subscription_type,
+          subscription_start_date,
+          subscription_end_date,
           created_at,
           updated_at
         `);
@@ -49,3 +53,4 @@ export const useOrganizations = () => {
     isLoading: isLoadingMetrics || isLoadingOrganizations
   };
 };
+
