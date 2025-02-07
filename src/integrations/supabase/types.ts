@@ -157,6 +157,93 @@ export type Database = {
           },
         ]
       }
+      license_assignments: {
+        Row: {
+          assigned_at: string | null
+          assigned_by: string
+          assigned_to: string
+          created_at: string | null
+          id: string
+          organization_id: string
+          organization_license_id: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_by: string
+          assigned_to: string
+          created_at?: string | null
+          id?: string
+          organization_id: string
+          organization_license_id: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_by?: string
+          assigned_to?: string
+          created_at?: string | null
+          id?: string
+          organization_id?: string
+          organization_license_id?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "license_assignments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "license_assignments_organization_license_id_fkey"
+            columns: ["organization_license_id"]
+            isOneToOne: false
+            referencedRelation: "organization_licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      license_plans: {
+        Row: {
+          cost_per_license: number
+          created_at: string | null
+          description: string | null
+          features: Json | null
+          id: string
+          is_active: boolean | null
+          name: string
+          type: Database["public"]["Enums"]["license_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          cost_per_license: number
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          type: Database["public"]["Enums"]["license_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          cost_per_license?: number
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          type?: Database["public"]["Enums"]["license_type"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       organization_activities: {
         Row: {
           activity_type: string
@@ -230,6 +317,63 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "organization_audit_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_licenses: {
+        Row: {
+          created_at: string | null
+          expiry_date: string
+          id: string
+          license_plan_id: string
+          organization_id: string
+          purchase_date: string | null
+          quantity: number
+          start_date: string
+          status: string | null
+          total_amount: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expiry_date: string
+          id?: string
+          license_plan_id: string
+          organization_id: string
+          purchase_date?: string | null
+          quantity?: number
+          start_date: string
+          status?: string | null
+          total_amount: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expiry_date?: string
+          id?: string
+          license_plan_id?: string
+          organization_id?: string
+          purchase_date?: string | null
+          quantity?: number
+          start_date?: string
+          status?: string | null
+          total_amount?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_licenses_license_plan_id_fkey"
+            columns: ["license_plan_id"]
+            isOneToOne: false
+            referencedRelation: "license_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_licenses_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -649,6 +793,7 @@ export type Database = {
     }
     Enums: {
       admin_role: "admin" | "manager"
+      license_type: "monthly" | "yearly"
       organization_status: "active" | "inactive" | "restricted"
       user_role:
         | "global_super_admin"
