@@ -19,7 +19,6 @@ const Organizations = () => {
       id: org.id,
       data: {
         name: org.name,
-        organization_type: org.organization_type,
         email: org.email,
         phone: org.phone,
         address_line1: org.address_line1,

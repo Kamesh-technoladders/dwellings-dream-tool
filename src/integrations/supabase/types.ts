@@ -479,7 +479,6 @@ export type Database = {
           id: string
           last_status_change: string | null
           name: string
-          organization_type: string | null
           phone: string | null
           pincode: string | null
           state: string | null
@@ -498,7 +497,6 @@ export type Database = {
           id?: string
           last_status_change?: string | null
           name: string
-          organization_type?: string | null
           phone?: string | null
           pincode?: string | null
           state?: string | null
@@ -517,7 +515,6 @@ export type Database = {
           id?: string
           last_status_change?: string | null
           name?: string
-          organization_type?: string | null
           phone?: string | null
           pincode?: string | null
           state?: string | null
