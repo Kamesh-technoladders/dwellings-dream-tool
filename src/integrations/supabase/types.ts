@@ -503,8 +503,8 @@ export type Database = {
       }
       is_org_super_admin: {
         Args: {
-          user_id: string
-          org_id: string
+          organization_id: string
+          checking_user_id: string
         }
         Returns: boolean
       }
