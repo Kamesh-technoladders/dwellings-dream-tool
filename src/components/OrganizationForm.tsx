@@ -39,6 +39,8 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
       status: 'active',
       updated_at: new Date().toISOString(),
       last_status_change: new Date().toISOString(),
+      status_changed_by: null,
+      status_reason: null,
     });
     onClose();
   };
