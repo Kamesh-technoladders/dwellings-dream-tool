@@ -60,7 +60,8 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
         return;
       }
 
-      const { error } = await supabase
+      // Start a transaction by creating the organization
+      const { data: organization, error: orgError } = await supabase
         .from("organizations")
         .insert({
           name: data.name,
@@ -70,9 +71,22 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
           status: 'active',
           last_status_change: new Date().toISOString(),
           status_changed_by: session.user.id
+        })
+        .select()
+        .single();
+
+      if (orgError) throw orgError;
+
+      // Create organization_users record for the creator as org_super_admin
+      const { error: userError } = await supabase
+        .from("organization_users")
+        .insert({
+          organization_id: organization.id,
+          user_id: session.user.id,
+          role: 'org_super_admin'
         });
 
-      if (error) throw error;
+      if (userError) throw userError;
 
       toast.success("Organization created successfully!");
       onClose();
