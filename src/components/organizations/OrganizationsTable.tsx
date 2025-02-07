@@ -7,17 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { DeleteOrganizationDialog } from "./DeleteOrganizationDialog";
-import { EditOrganizationDialog } from "./EditOrganizationDialog";
-import { StatusManagementDialog } from "./StatusManagementDialog";
-import { StatusBadge } from "./StatusBadge";
 import { OrganizationFormData, OrganizationStatus, StatusChangeData } from "@/types/organization";
-import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Shield } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { StatusManagementDialog } from "./StatusManagementDialog";
+import { TableSkeleton } from "./table/TableSkeleton";
+import { OrganizationRow } from "./table/OrganizationRow";
 
 interface OrganizationsTableProps {
   organizations: any[];
@@ -90,15 +84,7 @@ export const OrganizationsTable = ({
         </TableHeader>
         <TableBody>
           {isLoading ? (
-            Array.from({ length: 3 }).map((_, index) => (
-              <TableRow key={index}>
-                {Array.from({ length: 9 }).map((_, cellIndex) => (
-                  <TableCell key={cellIndex}>
-                    <Skeleton className="h-4 w-[100px]" />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            <TableSkeleton />
           ) : organizations?.length === 0 ? (
             <TableRow>
               <TableCell colSpan={9} className="text-center py-4">
@@ -107,84 +93,34 @@ export const OrganizationsTable = ({
             </TableRow>
           ) : (
             organizations?.map((org) => (
-              <TableRow key={org.id}>
-                <TableCell>{org.name}</TableCell>
-                <TableCell>{org.email}</TableCell>
-                <TableCell>{org.phone}</TableCell>
-                <TableCell>{org.address_line1}</TableCell>
-                <TableCell>{org.city}</TableCell>
-                <TableCell>{org.district}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <StatusBadge status={org.status as OrganizationStatus} />
-                    {org.status !== 'active' && org.status_reason && (
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Shield className="h-4 w-4 text-gray-500" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="max-w-[200px] text-sm">
-                            {org.status_reason}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-col gap-1">
-                    <Badge className={org.subscription_status === 'active' ? "bg-green-500" : "bg-gray-500"}>
-                      {org.subscription_status}
-                    </Badge>
-                    {org.subscription_type && (
-                      <span className="text-xs text-gray-600">
-                        {org.subscription_type}
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                      onClick={() => handleStatusClick(org)}
-                    >
-                      <Shield className="h-4 w-4" />
-                    </Button>
-
-                    <EditOrganizationDialog
-                      isOpen={isEditDialogOpen}
-                      onOpenChange={setIsEditDialogOpen}
-                      onUpdate={handleUpdate}
-                      initialData={editingOrg?.data || {
-                        name: "",
-                        email: "",
-                        phone: "",
-                        address_line1: "",
-                        address_line2: "",
-                        city: "",
-                        district: "",
-                        state: "",
-                        pincode: "",
-                        subscription_status: "inactive",
-                        subscription_type: undefined,
-                        subscription_start_date: undefined,
-                        subscription_end_date: undefined,
-                      }}
-                      onEdit={() => onEdit(org)}
-                    />
-
-                    <DeleteOrganizationDialog
-                      isOpen={deleteDialogOpen}
-                      onOpenChange={setDeleteDialogOpen}
-                      onDelete={() => onDelete(organizationToDelete || "")}
-                      isDeleting={isDeleting}
-                    />
-                  </div>
-                </TableCell>
-              </TableRow>
+              <OrganizationRow
+                key={org.id}
+                org={org}
+                onStatusClick={handleStatusClick}
+                onEdit={() => onEdit(org)}
+                isEditDialogOpen={isEditDialogOpen}
+                setIsEditDialogOpen={setIsEditDialogOpen}
+                onUpdate={handleUpdate}
+                initialData={editingOrg?.data || {
+                  name: "",
+                  email: "",
+                  phone: "",
+                  address_line1: "",
+                  address_line2: "",
+                  city: "",
+                  district: "",
+                  state: "",
+                  pincode: "",
+                  subscription_status: "inactive",
+                  subscription_type: undefined,
+                  subscription_start_date: undefined,
+                  subscription_end_date: undefined,
+                }}
+                isDeleteDialogOpen={deleteDialogOpen}
+                setDeleteDialogOpen={setDeleteDialogOpen}
+                onDelete={() => onDelete(organizationToDelete || "")}
+                isDeleting={isDeleting}
+              />
             ))
           )}
         </TableBody>
