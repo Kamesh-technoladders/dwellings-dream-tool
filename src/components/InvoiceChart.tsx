@@ -1,12 +1,12 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 type TimeRange = 'last_7_days' | 'last_30_days' | 'last_quarter' | 'last_year' | 'ytd';
 
-// Simulated data fetching function
 const fetchInvoiceData = async (timeRange: TimeRange) => {
   // In a real app, this would be an API call
   const mockData = {
@@ -48,15 +48,31 @@ export const InvoiceChart = () => {
     queryFn: () => fetchInvoiceData(timeRange),
   });
 
+  const renderLegend = () => (
+    <div className="flex flex-wrap justify-center gap-4 mt-4">
+      {data.map((item, index) => (
+        <div key={index} className="flex items-center gap-2">
+          <div 
+            className="w-3 h-3 rounded-sm" 
+            style={{ backgroundColor: item.color }}
+          />
+          <span className="text-xs lg:text-sm text-muted-foreground whitespace-nowrap">
+            {item.name} ({item.value}%)
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <Card className="w-full border-0">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Invoice statistics</CardTitle>
         <Select value={timeRange} onValueChange={(value: TimeRange) => setTimeRange(value)}>
-          <SelectTrigger className="w-[140px] h-8 text-xs bg-white hover:bg-primary hover:text-white transition-colors">
+          <SelectTrigger className="w-[120px] lg:w-[140px] h-8 text-xs bg-white hover:bg-primary hover:text-white transition-colors">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-white w-[140px]">
+          <SelectContent className="bg-white w-[120px] lg:w-[140px]">
             <SelectItem value="last_7_days" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Last 7 days</SelectItem>
             <SelectItem value="last_30_days" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Last 30 days</SelectItem>
             <SelectItem value="last_quarter" className="py-1 text-sm hover:bg-primary hover:text-white transition-colors">Last Quarter</SelectItem>
@@ -65,38 +81,37 @@ export const InvoiceChart = () => {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="relative h-[300px]">
-        <ResponsiveContainer width="100%" height="80%">
-          <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={80}
-              cornerRadius={6}
-              paddingAngle={2}
-              dataKey="value"
-            >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
-        <div className="flex justify-center gap-6">
-          {data.map((item, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <div 
-                className="w-3 h-3 rounded-sm" 
-                style={{ backgroundColor: item.color }}
+      <CardContent>
+        <div className="h-[250px] lg:h-[300px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={90}
+                cornerRadius={6}
+                paddingAngle={4}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'white',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  padding: '8px'
+                }}
+                formatter={(value: number) => [`${value}%`]}
               />
-              <span className="text-sm text-muted-foreground">
-                {item.name} ({item.value}%)
-              </span>
-            </div>
-          ))}
+            </PieChart>
+          </ResponsiveContainer>
         </div>
+        {renderLegend()}
       </CardContent>
     </Card>
   );

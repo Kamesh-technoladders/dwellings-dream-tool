@@ -5,7 +5,9 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useOrganizations } from "@/hooks/useOrganizations";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1, "Organization name is required"),
@@ -21,7 +23,34 @@ interface OrganizationFormProps {
 }
 
 export function OrganizationForm({ onClose }: OrganizationFormProps) {
-  const { createOrganization } = useOrganizations();
+  const queryClient = useQueryClient();
+
+  const createOrganization = useMutation({
+    mutationFn: async (newOrg: OrganizationFormData) => {
+      const { data, error } = await supabase
+        .from('organizations')
+        .insert({
+          ...newOrg,
+          status: 'active',
+          updated_at: new Date().toISOString(),
+          last_status_change: new Date().toISOString(),
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['organizations'] });
+      toast.success('Organization created successfully');
+      onClose();
+    },
+    onError: (error) => {
+      console.error('Error creating organization:', error);
+      toast.error('Failed to create organization');
+    },
+  });
 
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(formSchema),
@@ -33,19 +62,8 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
     },
   });
 
-  const onSubmit = async (formData: OrganizationFormData) => {
-    createOrganization.mutate({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      address: formData.address,
-      status: 'active',
-      updated_at: new Date().toISOString(),
-      last_status_change: new Date().toISOString(),
-      status_changed_by: null,
-      status_reason: null,
-    });
-    onClose();
+  const onSubmit = (formData: OrganizationFormData) => {
+    createOrganization.mutate(formData);
   };
 
   return (
