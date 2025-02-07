@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -7,7 +6,6 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, "Organization name is required"),
@@ -23,8 +21,6 @@ interface OrganizationFormProps {
 }
 
 export function OrganizationForm({ onClose }: OrganizationFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
-
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,66 +31,25 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
     },
   });
 
-  // Check authentication status when component mounts
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast.error("You must be logged in to perform this action");
-        onClose();
-      }
-    };
-    
-    checkAuth();
-  }, [onClose]);
-
   const onSubmit = async (data: OrganizationFormData) => {
     try {
-      setIsLoading(true);
-      
-      // Get current session
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        toast.error("You must be logged in to create an organization");
-        return;
-      }
-
-      // Start a transaction by creating the organization
-      const { data: organization, error: orgError } = await supabase
+      const { error } = await supabase
         .from("organizations")
         .insert({
           name: data.name,
           email: data.email,
           phone: data.phone,
           address: data.address,
-          status: 'active',
-          last_status_change: new Date().toISOString(),
-          status_changed_by: session.user.id
-        })
-        .select()
-        .single();
-
-      if (orgError) throw orgError;
-
-      // Create organization_users record for the creator as org_super_admin
-      const { error: userError } = await supabase
-        .from("organization_users")
-        .insert({
-          organization_id: organization.id,
-          user_id: session.user.id,
-          role: 'org_super_admin'
+          status: 'active' // Set default status
         });
 
-      if (userError) throw userError;
+      if (error) throw error;
 
       toast.success("Organization created successfully!");
       onClose();
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error creating organization:", error);
-      toast.error(error.message || "Failed to create organization");
-    } finally {
-      setIsLoading(false);
+      toast.error("Failed to create organization");
     }
   };
 
@@ -158,12 +113,10 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
         />
 
         <div className="flex justify-end gap-4 pt-4">
-          <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create Organization"}
-          </Button>
+          <Button type="submit">Create Organization</Button>
         </div>
       </form>
     </Form>
