@@ -35,6 +35,8 @@ const Organizations = () => {
   const { deleteOrganization, updateOrganization } = useOrganizationMutations();
   const [editingOrg, setEditingOrg] = useState<{ id: string; data: OrganizationFormData } | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [organizationToDelete, setOrganizationToDelete] = useState<string | null>(null);
 
   const handleEdit = (org: any) => {
     setEditingOrg({
@@ -55,8 +57,21 @@ const Organizations = () => {
     setIsEditDialogOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteOrganization.mutateAsync(id);
+  const handleDeleteClick = (id: string) => {
+    setOrganizationToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!organizationToDelete) return;
+    
+    try {
+      await deleteOrganization.mutateAsync(organizationToDelete);
+      setDeleteDialogOpen(false);
+      setOrganizationToDelete(null);
+    } catch (error) {
+      console.error('Error deleting organization:', error);
+    }
   };
 
   const handleUpdate = async (formData: OrganizationFormData) => {
@@ -145,7 +160,7 @@ const Organizations = () => {
                         </DialogContent>
                       </Dialog>
 
-                      <AlertDialog>
+                      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
                         <AlertDialogTrigger asChild>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -153,6 +168,7 @@ const Organizations = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 hover:bg-red-100 hover:text-red-600"
+                                onClick={() => handleDeleteClick(org.id)}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
@@ -168,12 +184,15 @@ const Organizations = () => {
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel onClick={() => setDeleteDialogOpen(false)}>
+                              Cancel
+                            </AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => handleDelete(org.id)}
+                              onClick={handleDelete}
                               className="bg-red-600 hover:bg-red-700"
+                              disabled={deleteOrganization.isPending}
                             >
-                              Delete
+                              {deleteOrganization.isPending ? 'Deleting...' : 'Delete'}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
