@@ -1,12 +1,8 @@
 
 import * as z from "zod";
-import { organizationTypes } from "@/types/organization";
 
 export const organizationFormSchema = z.object({
   name: z.string().min(1, "Organization name is required"),
-  organization_type: z.enum(organizationTypes, {
-    required_error: "Please select an organization type",
-  }),
   email: z.string().email("Invalid email address"),
   phone: z.string().regex(
     /^\+[1-9]\d{1,3}[0-9]{10,14}$/,

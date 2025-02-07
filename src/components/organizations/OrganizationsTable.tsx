@@ -49,7 +49,6 @@ export const OrganizationsTable = ({
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Type</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Phone</TableHead>
             <TableHead>Address</TableHead>
@@ -62,7 +61,7 @@ export const OrganizationsTable = ({
           {isLoading ? (
             Array.from({ length: 3 }).map((_, index) => (
               <TableRow key={index}>
-                {Array.from({ length: 8 }).map((_, cellIndex) => (
+                {Array.from({ length: 7 }).map((_, cellIndex) => (
                   <TableCell key={cellIndex}>
                     <Skeleton className="h-4 w-[100px]" />
                   </TableCell>
@@ -71,7 +70,7 @@ export const OrganizationsTable = ({
             ))
           ) : organizations?.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={8} className="text-center py-4">
+              <TableCell colSpan={7} className="text-center py-4">
                 No organizations found
               </TableCell>
             </TableRow>
@@ -79,7 +78,6 @@ export const OrganizationsTable = ({
             organizations?.map((org) => (
               <TableRow key={org.id}>
                 <TableCell>{org.name}</TableCell>
-                <TableCell>{org.organization_type}</TableCell>
                 <TableCell>{org.email}</TableCell>
                 <TableCell>{org.phone}</TableCell>
                 <TableCell>{org.address_line1}</TableCell>
@@ -95,7 +93,6 @@ export const OrganizationsTable = ({
                         name: "",
                         email: "",
                         phone: "",
-                        organization_type: "",
                         address_line1: "",
                         address_line2: "",
                         city: "",
