@@ -9,7 +9,7 @@ export const useOrganizations = () => {
       const { data, error } = await supabase
         .from('organization_metrics')
         .select('*')
-        .maybeSingle();  // Changed from .single() to .maybeSingle()
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -21,7 +21,22 @@ export const useOrganizations = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('organizations')
-        .select('*');
+        .select(`
+          id,
+          name,
+          organization_type,
+          email,
+          phone,
+          address_line1,
+          address_line2,
+          city,
+          district,
+          state,
+          pincode,
+          status,
+          created_at,
+          updated_at
+        `);
 
       if (error) throw error;
       return data;
@@ -32,6 +47,7 @@ export const useOrganizations = () => {
     totalOrganizations: organizations?.length || 0,
     activeUsers: metrics?.total_users || 0,
     totalRevenue: metrics?.total_revenue || 0,
+    organizations,
     isLoading: isLoadingMetrics || isLoadingOrganizations
   };
 };
