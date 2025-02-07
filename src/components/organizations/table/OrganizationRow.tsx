@@ -6,6 +6,7 @@ import { Shield } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { StatusBadge } from "../StatusBadge";
 import { OrganizationStatus } from "@/types/organization";
+import { TableActions } from "./TableActions";
 
 interface OrganizationRowProps {
   org: any;
