@@ -21,8 +21,8 @@ export default function Organizations() {
   // Check if user is authenticated and get their role
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
         navigate("/auth");
         return;
       }
@@ -31,7 +31,7 @@ export default function Organizations() {
       const { data: profile } = await supabase
         .from("profiles")
         .select("is_global_admin")
-        .eq("id", user.id)
+        .eq("id", session.user.id)
         .single();
 
       setIsGlobalAdmin(profile?.is_global_admin || false);
@@ -43,7 +43,11 @@ export default function Organizations() {
   const { data: organizations, isLoading, error, refetch } = useQuery({
     queryKey: ['organizations'],
     queryFn: async () => {
-      const { data: organizations, error } = await supabase
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("Not authenticated");
+
+      // Fetch organizations - RLS will handle the access control
+      const { data, error } = await supabase
         .from('organizations')
         .select('*')
         .order('created_at', { ascending: false });
@@ -58,7 +62,7 @@ export default function Organizations() {
         throw error;
       }
 
-      return organizations as Organization[];
+      return data as Organization[];
     },
   });
 
