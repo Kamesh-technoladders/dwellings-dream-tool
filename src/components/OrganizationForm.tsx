@@ -11,12 +11,15 @@ import { AddressFields } from "./forms/AddressFields";
 
 interface OrganizationFormProps {
   onClose: () => void;
+  initialData?: OrganizationFormData;
+  onSubmit?: (data: OrganizationFormData) => void;
+  mode?: 'create' | 'edit';
 }
 
-export function OrganizationForm({ onClose }: OrganizationFormProps) {
+export function OrganizationForm({ onClose, initialData, onSubmit, mode = 'create' }: OrganizationFormProps) {
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(organizationFormSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       name: "",
       email: "",
       phone: "",
@@ -31,13 +34,17 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
 
   const createOrganization = useCreateOrganization(onClose);
 
-  const onSubmit = (formData: OrganizationFormData) => {
-    createOrganization.mutate(formData);
+  const handleSubmit = (formData: OrganizationFormData) => {
+    if (mode === 'edit' && onSubmit) {
+      onSubmit(formData);
+    } else {
+      createOrganization.mutate(formData);
+    }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[80vh] overflow-y-auto px-1">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 max-h-[80vh] overflow-y-auto px-1">
         <div className="space-y-3">
           <OrganizationBasicFields form={form} />
           <AddressFields form={form} />
@@ -47,8 +54,14 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={createOrganization.isPending}>
-            {createOrganization.isPending ? 'Creating...' : 'Create Organization'}
+          <Button 
+            type="submit" 
+            disabled={mode === 'create' ? createOrganization.isPending : false}
+          >
+            {mode === 'create' 
+              ? (createOrganization.isPending ? 'Creating...' : 'Create Organization')
+              : 'Update Organization'
+            }
           </Button>
         </div>
       </form>

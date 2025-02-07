@@ -1,5 +1,6 @@
 
 import { useOrganizations } from "@/hooks/useOrganizations";
+import { useOrganizationMutations } from "@/hooks/useOrganizationMutations";
 import {
   Table,
   TableBody,
@@ -13,9 +14,60 @@ import { GlobalAdminActions } from "@/components/GlobalAdminActions";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
+import { OrganizationForm } from "@/components/OrganizationForm";
+import { OrganizationFormData } from "@/types/organization";
 
 const Organizations = () => {
   const { organizations, isLoading } = useOrganizations();
+  const { deleteOrganization, updateOrganization } = useOrganizationMutations();
+  const [editingOrg, setEditingOrg] = useState<{ id: string; data: OrganizationFormData } | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const handleEdit = (org: any) => {
+    setEditingOrg({
+      id: org.id,
+      data: {
+        name: org.name,
+        organization_type: org.organization_type,
+        email: org.email,
+        phone: org.phone,
+        address_line1: org.address_line1,
+        address_line2: org.address_line2 || "",
+        city: org.city,
+        district: org.district,
+        state: org.state,
+        pincode: org.pincode,
+      },
+    });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteOrganization.mutateAsync(id);
+  };
+
+  const handleUpdate = async (formData: OrganizationFormData) => {
+    if (!editingOrg) return;
+    await updateOrganization.mutateAsync({
+      id: editingOrg.id,
+      data: formData,
+    });
+    setIsEditDialogOpen(false);
+    setEditingOrg(null);
+  };
 
   return (
     <div>
@@ -65,39 +117,67 @@ const Organizations = () => {
                   <TableCell>{org.district}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => {
-                              // Edit functionality will be implemented
-                              console.log('Edit organization:', org.id);
-                            }}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Edit organization</TooltipContent>
-                      </Tooltip>
+                      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                        <DialogTrigger asChild>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={() => handleEdit(org)}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Edit organization</TooltipContent>
+                          </Tooltip>
+                        </DialogTrigger>
+                        <DialogContent>
+                          {editingOrg && (
+                            <OrganizationForm
+                              onClose={() => setIsEditDialogOpen(false)}
+                              initialData={editingOrg.data}
+                              onSubmit={handleUpdate}
+                              mode="edit"
+                            />
+                          )}
+                        </DialogContent>
+                      </Dialog>
 
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 hover:bg-red-100 hover:text-red-600"
-                            onClick={() => {
-                              // Delete functionality will be implemented
-                              console.log('Delete organization:', org.id);
-                            }}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Delete organization</TooltipContent>
-                      </Tooltip>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 hover:bg-red-100 hover:text-red-600"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Delete organization</TooltipContent>
+                          </Tooltip>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Organization</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete this organization? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(org.id)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -108,6 +188,6 @@ const Organizations = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Organizations;
