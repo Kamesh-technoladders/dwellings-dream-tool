@@ -43,42 +43,9 @@ export default function Organizations() {
   const { data: organizations, isLoading, error, refetch } = useQuery({
     queryKey: ['organizations'],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      // First check if user is global admin
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("is_global_admin")
-        .eq("id", user.id)
-        .single();
-
-      // If global admin, fetch all organizations
-      if (profile?.is_global_admin) {
-        const { data, error } = await supabase
-          .from('organizations')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        return data;
-      }
-
-      // If not global admin, fetch organizations where user is a member
-      const { data: memberOrgs, error: memberError } = await supabase
-        .from('organization_users')
-        .select('organization_id')
-        .eq('user_id', user.id);
-
-      if (memberError) throw memberError;
-
-      if (!memberOrgs?.length) return [];
-
-      const orgIds = memberOrgs.map(org => org.organization_id);
-      const { data, error } = await supabase
+      const { data: organizations, error } = await supabase
         .from('organizations')
         .select('*')
-        .in('id', orgIds)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -91,7 +58,7 @@ export default function Organizations() {
         throw error;
       }
 
-      return data as Organization[];
+      return organizations as Organization[];
     },
   });
 
