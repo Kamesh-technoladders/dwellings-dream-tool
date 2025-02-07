@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Properties from "./pages/Properties";
 import NotFound from "./pages/NotFound";
 import Organizations from "./pages/Organizations";
+import { AppShell } from "./components/AppShell";
 
 const queryClient = new QueryClient();
 
@@ -16,16 +17,18 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <SidebarProvider>
-        <div className="relative">
+        <div className="relative min-h-screen w-full">
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/properties" element={<Properties />} />
-              <Route path="/organizations" element={<Organizations />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <AppShell>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/properties" element={<Properties />} />
+                <Route path="/organizations" element={<Organizations />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AppShell>
           </BrowserRouter>
         </div>
       </SidebarProvider>

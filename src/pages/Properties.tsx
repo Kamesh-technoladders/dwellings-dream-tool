@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { PropertiesTable } from "@/components/PropertiesTable";
 import { usePropertiesStore } from "@/store/propertiesStore";
@@ -18,8 +19,7 @@ export default function Properties() {
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-6">Properties</h1>
+    <div>
       <PropertiesTable properties={properties} />
     </div>
   );

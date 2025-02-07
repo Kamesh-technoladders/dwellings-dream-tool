@@ -1,3 +1,4 @@
+
 import {
   Building,
   Calendar,
@@ -16,7 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const menuItems = [
   {
@@ -68,10 +69,10 @@ export function AppSidebar() {
                     data-active={location.pathname === item.path}
                     className="hover:bg-purple-100 data-[active=true]:bg-[#9b87f5] data-[active=true]:text-white"
                   >
-                    <a href={item.path}>
-                      <item.icon className="w-5 h-5" />
+                    <Link to={item.path} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
