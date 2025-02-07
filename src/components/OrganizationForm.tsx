@@ -37,6 +37,8 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
     createOrganization.mutate({
       ...data,
       status: 'active',
+      updated_at: new Date().toISOString(),
+      last_status_change: new Date().toISOString(),
     });
     onClose();
   };

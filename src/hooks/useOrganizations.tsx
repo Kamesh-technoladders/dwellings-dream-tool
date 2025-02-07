@@ -11,6 +11,10 @@ export type Organization = {
   address: string | null;
   status: 'active' | 'inactive' | 'restricted';
   created_at: string;
+  updated_at: string | null;
+  last_status_change: string | null;
+  status_changed_by: string | null;
+  status_reason: string | null;
 };
 
 export const useOrganizations = () => {
