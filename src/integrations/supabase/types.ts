@@ -122,6 +122,163 @@ export type Database = {
           },
         ]
       }
+      invoices: {
+        Row: {
+          amount: number
+          created_at: string | null
+          due_date: string | null
+          id: string
+          organization_id: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id: string
+          status: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          organization_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_activities: {
+        Row: {
+          activity_type: string
+          created_at: string | null
+          description: string
+          id: string
+          organization_id: string
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string | null
+          description: string
+          id?: string
+          organization_id: string
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          organization_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_organization"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_audit_logs: {
+        Row: {
+          changed_by: string
+          created_at: string | null
+          id: string
+          new_status: string
+          old_status: string | null
+          organization_id: string
+          reason: string | null
+        }
+        Insert: {
+          changed_by: string
+          created_at?: string | null
+          id?: string
+          new_status: string
+          old_status?: string | null
+          organization_id: string
+          reason?: string | null
+        }
+        Update: {
+          changed_by?: string
+          created_at?: string | null
+          id?: string
+          new_status?: string
+          old_status?: string | null
+          organization_id?: string
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_audit_logs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_metrics: {
+        Row: {
+          active_properties: number | null
+          id: string
+          last_updated: string | null
+          organization_id: string
+          total_properties: number | null
+          total_users: number | null
+        }
+        Insert: {
+          active_properties?: number | null
+          id?: string
+          last_updated?: string | null
+          organization_id: string
+          total_properties?: number | null
+          total_users?: number | null
+        }
+        Update: {
+          active_properties?: number | null
+          id?: string
+          last_updated?: string | null
+          organization_id?: string
+          total_properties?: number | null
+          total_users?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_organization"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organization_users: {
         Row: {
           created_at: string | null
@@ -163,9 +320,12 @@ export type Database = {
           created_at: string | null
           email: string | null
           id: string
+          last_status_change: string | null
           name: string
           phone: string | null
-          status: string
+          status: Database["public"]["Enums"]["organization_status"]
+          status_changed_by: string | null
+          status_reason: string | null
           updated_at: string | null
         }
         Insert: {
@@ -173,9 +333,12 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           id?: string
+          last_status_change?: string | null
           name: string
           phone?: string | null
-          status?: string
+          status?: Database["public"]["Enums"]["organization_status"]
+          status_changed_by?: string | null
+          status_reason?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -183,12 +346,53 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           id?: string
+          last_status_change?: string | null
           name?: string
           phone?: string | null
-          status?: string
+          status?: Database["public"]["Enums"]["organization_status"]
+          status_changed_by?: string | null
+          status_reason?: string | null
           updated_at?: string | null
         }
         Relationships: []
+      }
+      product_metrics: {
+        Row: {
+          created_at: string | null
+          id: string
+          measurement_date: string
+          organization_id: string
+          product_name: string
+          revenue: number | null
+          units_sold: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          measurement_date: string
+          organization_id: string
+          product_name: string
+          revenue?: number | null
+          units_sold?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          measurement_date?: string
+          organization_id?: string
+          product_name?: string
+          revenue?: number | null
+          units_sold?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_metrics_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -289,6 +493,44 @@ export type Database = {
         }
         Relationships: []
       }
+      sales_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          organization_id: string
+          product_id: string | null
+          transaction_date: string | null
+          transaction_type: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          organization_id: string
+          product_id?: string | null
+          transaction_date?: string | null
+          transaction_type: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          organization_id?: string
+          product_id?: string | null
+          transaction_date?: string | null
+          transaction_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_transactions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       SpaceDetail: {
         Row: {
           created_at: string
@@ -357,6 +599,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_organization: {
+        Args: {
+          org_id: string
+          checking_user_id: string
+        }
+        Returns: boolean
+      }
       is_global_admin: {
         Args: {
           user_id: string
@@ -365,14 +614,15 @@ export type Database = {
       }
       is_org_super_admin: {
         Args: {
-          user_id: string
-          org_id: string
+          organization_id: string
+          checking_user_id: string
         }
         Returns: boolean
       }
     }
     Enums: {
       admin_role: "admin" | "manager"
+      organization_status: "active" | "inactive" | "restricted"
       user_role:
         | "global_super_admin"
         | "org_super_admin"
