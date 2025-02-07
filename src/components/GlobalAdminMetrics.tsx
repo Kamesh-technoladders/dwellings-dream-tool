@@ -25,25 +25,21 @@ export const GlobalAdminMetrics = () => {
         title="Total Organizations"
         value={totalOrganizations}
         icon={Building2}
-        trend={{ value: "+3", positive: true }}
       />
       <MetricsCard
         title="Total Users"
         value={activeUsers}
         icon={Users}
-        trend={{ value: "+18%", positive: true }}
       />
       <MetricsCard
         title="Total Revenue"
-        value={`$${totalRevenue}`}
+        value={`$${totalRevenue.toLocaleString()}`}
         icon={DollarSign}
-        trend={{ value: "+8%", positive: true }}
       />
       <MetricsCard
         title="Active Sessions"
         value="456"
         icon={Activity}
-        trend={{ value: "+12%", positive: true }}
       />
     </div>
   );

@@ -2,7 +2,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { GlobalAdminSidebar } from "@/components/GlobalAdminSidebar";
 import { GlobalAdminMetrics } from "@/components/GlobalAdminMetrics";
-import { GlobalAdminActions } from "@/components/GlobalAdminActions";
 import { InvoiceChart } from "@/components/InvoiceChart";
 import { ProductSalesChart } from "@/components/ProductSalesChart";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -20,13 +19,10 @@ const Index = () => {
           {/* Metrics Section */}
           <GlobalAdminMetrics />
 
-          {/* Actions + Charts Section */}
+          {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8">
             <div className="lg:col-span-4">
-              <GlobalAdminActions />
-              <div className="mt-4 lg:mt-8">
-                <InvoiceChart />
-              </div>
+              <InvoiceChart />
             </div>
             <div className="lg:col-span-8">
               <ProductSalesChart />

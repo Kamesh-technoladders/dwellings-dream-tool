@@ -6,13 +6,9 @@ interface MetricsCardProps {
   title: string;
   value: string | number;
   icon: LucideIcon;
-  trend?: {
-    value: string;
-    positive: boolean;
-  };
 }
 
-export const MetricsCard = ({ title, value, icon: Icon, trend }: MetricsCardProps) => {
+export const MetricsCard = ({ title, value, icon: Icon }: MetricsCardProps) => {
   const formattedValue = typeof value === 'number' && !Number.isInteger(value) 
     ? value.toLocaleString('en-US', { maximumFractionDigits: 2 })
     : value;
@@ -25,11 +21,6 @@ export const MetricsCard = ({ title, value, icon: Icon, trend }: MetricsCardProp
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{formattedValue}</div>
-        {trend && (
-          <p className={`text-xs ${trend.positive ? "text-green-600" : "text-red-600"}`}>
-            {trend.value} from last month
-          </p>
-        )}
       </CardContent>
     </Card>
   );
