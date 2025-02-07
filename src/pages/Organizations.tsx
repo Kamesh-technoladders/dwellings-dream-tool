@@ -43,10 +43,22 @@ export default function Organizations() {
   const { data: organizations, isLoading, error, refetch } = useQuery({
     queryKey: ['organizations'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      // First check if user is global admin
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_global_admin")
+        .eq("id", user.id)
+        .single();
+
+      let query = supabase
         .from('organizations')
         .select('*')
         .order('created_at', { ascending: false });
+
+      const { data, error } = await query;
 
       if (error) {
         console.error('Error fetching organizations:', error);
