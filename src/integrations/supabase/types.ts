@@ -242,24 +242,33 @@ export type Database = {
           active_properties: number | null
           id: string
           last_updated: string | null
+          monthly_growth: number | null
           organization_id: string
           total_properties: number | null
+          total_revenue: number | null
+          total_sales: number | null
           total_users: number | null
         }
         Insert: {
           active_properties?: number | null
           id?: string
           last_updated?: string | null
+          monthly_growth?: number | null
           organization_id: string
           total_properties?: number | null
+          total_revenue?: number | null
+          total_sales?: number | null
           total_users?: number | null
         }
         Update: {
           active_properties?: number | null
           id?: string
           last_updated?: string | null
+          monthly_growth?: number | null
           organization_id?: string
           total_properties?: number | null
+          total_revenue?: number | null
+          total_sales?: number | null
           total_users?: number | null
         }
         Relationships: [
@@ -324,7 +333,6 @@ export type Database = {
           name: string
           phone: string | null
           status: Database["public"]["Enums"]["organization_status"]
-          status_changed_by: string | null
           status_reason: string | null
           updated_at: string | null
         }
@@ -337,7 +345,6 @@ export type Database = {
           name: string
           phone?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
-          status_changed_by?: string | null
           status_reason?: string | null
           updated_at?: string | null
         }
@@ -350,7 +357,6 @@ export type Database = {
           name?: string
           phone?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
-          status_changed_by?: string | null
           status_reason?: string | null
           updated_at?: string | null
         }
