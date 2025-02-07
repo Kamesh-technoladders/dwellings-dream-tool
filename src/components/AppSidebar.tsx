@@ -1,23 +1,16 @@
 
 import {
   Building,
-  Calendar,
   Home,
-  MessageSquare,
   Settings,
-  User,
+  Users,
+  MessageSquare,
+  Calendar,
 } from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { useLocation, Link } from "react-router-dom";
+import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
+import { SidebarGroup } from "./sidebar/SidebarGroup";
+import { SidebarMenu } from "./sidebar/SidebarMenu";
+import { SidebarMenuItem } from "./sidebar/SidebarMenuItem";
 
 const menuItems = [
   {
@@ -26,14 +19,19 @@ const menuItems = [
     path: "/",
   },
   {
+    title: "Organizations",
+    icon: Building,
+    path: "/organizations",
+  },
+  {
     title: "Properties",
     icon: Building,
     path: "/properties",
   },
   {
-    title: "Leads",
-    icon: User,
-    path: "/leads",
+    title: "Users",
+    icon: Users,
+    path: "/users",
   },
   {
     title: "Messages",
@@ -53,31 +51,20 @@ const menuItems = [
 ];
 
 export function AppSidebar() {
-  const location = useLocation();
-
   return (
     <Sidebar>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    data-active={location.pathname === item.path}
-                    className="hover:bg-purple-100 data-[active=true]:bg-[#9b87f5] data-[active=true]:text-white"
-                  >
-                    <Link to={item.path} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
+        <SidebarGroup label="Menu">
+          <SidebarMenu>
+            {menuItems.map((item) => (
+              <SidebarMenuItem
+                key={item.path}
+                icon={item.icon}
+                title={item.title}
+                path={item.path}
+              />
+            ))}
+          </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
