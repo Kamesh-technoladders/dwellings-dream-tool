@@ -26,12 +26,15 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
   const queryClient = useQueryClient();
 
   const createOrganization = useMutation({
-    mutationFn: async (newOrg: OrganizationFormData) => {
+    mutationFn: async (formData: OrganizationFormData) => {
       const { data, error } = await supabase
         .from('organizations')
         .insert({
-          ...newOrg,
-          status: 'active',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          status: 'active' as const,
           updated_at: new Date().toISOString(),
           last_status_change: new Date().toISOString(),
         })
