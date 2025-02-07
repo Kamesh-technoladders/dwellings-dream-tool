@@ -35,7 +35,10 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
 
   const onSubmit = async (formData: OrganizationFormData) => {
     createOrganization.mutate({
-      ...formData, // Spread formData first to ensure required fields are included
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address,
       status: 'active',
       updated_at: new Date().toISOString(),
       last_status_change: new Date().toISOString(),
