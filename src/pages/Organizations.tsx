@@ -53,12 +53,33 @@ export default function Organizations() {
         .eq("id", user.id)
         .single();
 
-      let query = supabase
+      // If global admin, fetch all organizations
+      if (profile?.is_global_admin) {
+        const { data, error } = await supabase
+          .from('organizations')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return data;
+      }
+
+      // If not global admin, fetch organizations where user is a member
+      const { data: memberOrgs, error: memberError } = await supabase
+        .from('organization_users')
+        .select('organization_id')
+        .eq('user_id', user.id);
+
+      if (memberError) throw memberError;
+
+      if (!memberOrgs?.length) return [];
+
+      const orgIds = memberOrgs.map(org => org.organization_id);
+      const { data, error } = await supabase
         .from('organizations')
         .select('*')
+        .in('id', orgIds)
         .order('created_at', { ascending: false });
-
-      const { data, error } = await query;
 
       if (error) {
         console.error('Error fetching organizations:', error);
