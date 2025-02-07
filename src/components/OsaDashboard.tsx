@@ -27,24 +27,26 @@ export function OsaDashboard() {
           throw new Error("User not authenticated");
         }
 
-        const { data: organizationData, error: orgError } = await supabase
+        // Get user's organization
+        const { data: organizationUser, error: orgUserError } = await supabase
           .from("organization_users")
-          .select("organization_id, role")
+          .select("organization_id")
           .eq("user_id", user.id)
           .maybeSingle();
 
-        if (orgError) {
-          throw new Error("Failed to fetch organization data");
+        if (orgUserError) {
+          throw new Error("Failed to fetch organization");
         }
 
-        if (!organizationData) {
+        if (!organizationUser) {
           throw new Error("No organization found for user");
         }
 
+        // Fetch metrics for the organization
         const { data: metricsData, error: metricsError } = await supabase
           .from("organization_metrics")
           .select("*")
-          .eq("organization_id", organizationData.organization_id)
+          .eq("organization_id", organizationUser.organization_id)
           .maybeSingle();
 
         if (metricsError) {

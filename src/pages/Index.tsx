@@ -25,7 +25,7 @@ const Index = () => {
           throw new Error("User not authenticated");
         }
 
-        // Check for global admin role
+        // First check if user is a global admin
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("is_global_admin")
@@ -36,22 +36,26 @@ const Index = () => {
           throw new Error("Failed to fetch user profile");
         }
 
-        // If not global admin, check for org_super_admin role
-        if (!profile?.is_global_admin) {
-          const { data: orgUser, error: orgError } = await supabase
-            .from("organization_users")
-            .select("role")
-            .eq("user_id", user.id)
-            .maybeSingle();
-
-          if (orgError) {
-            throw new Error("Failed to fetch organization role");
-          }
-
-          setIsGlobalAdmin(orgUser?.role === "org_super_admin");
-        } else {
+        if (profile?.is_global_admin) {
           setIsGlobalAdmin(true);
+          return;
         }
+
+        // If not global admin, check organization roles
+        const { data: orgUser, error: orgError } = await supabase
+          .from("organization_users")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "org_super_admin")
+          .maybeSingle();
+
+        if (orgError) {
+          console.error("Error fetching organization role:", orgError);
+          throw new Error("Failed to fetch organization role");
+        }
+
+        setIsGlobalAdmin(!!orgUser);
+
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "An error occurred";
         setError(errorMessage);

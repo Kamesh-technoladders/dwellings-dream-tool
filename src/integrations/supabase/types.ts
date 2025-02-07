@@ -488,6 +488,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_organization: {
+        Args: {
+          org_id: string
+          checking_user_id: string
+        }
+        Returns: boolean
+      }
       is_global_admin: {
         Args: {
           user_id: string
