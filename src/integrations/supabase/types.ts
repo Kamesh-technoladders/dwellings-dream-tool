@@ -317,7 +317,7 @@ export type Database = {
       organizations: {
         Row: {
           address: string | null
-          created_at: string | null
+          created_at: string
           email: string | null
           id: string
           last_status_change: string | null
@@ -330,7 +330,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
-          created_at?: string | null
+          created_at?: string
           email?: string | null
           id?: string
           last_status_change?: string | null
@@ -343,7 +343,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
-          created_at?: string | null
+          created_at?: string
           email?: string | null
           id?: string
           last_status_change?: string | null

@@ -1,11 +1,11 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { useOrganizations } from "@/hooks/useOrganizations";
 
 const formSchema = z.object({
   name: z.string().min(1, "Organization name is required"),
@@ -21,6 +21,8 @@ interface OrganizationFormProps {
 }
 
 export function OrganizationForm({ onClose }: OrganizationFormProps) {
+  const { createOrganization } = useOrganizations();
+
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,25 +34,11 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
   });
 
   const onSubmit = async (data: OrganizationFormData) => {
-    try {
-      const { error } = await supabase
-        .from("organizations")
-        .insert({
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          address: data.address,
-          status: 'active' // Set default status
-        });
-
-      if (error) throw error;
-
-      toast.success("Organization created successfully!");
-      onClose();
-    } catch (error) {
-      console.error("Error creating organization:", error);
-      toast.error("Failed to create organization");
-    }
+    createOrganization.mutate({
+      ...data,
+      status: 'active',
+    });
+    onClose();
   };
 
   return (
@@ -116,7 +104,9 @@ export function OrganizationForm({ onClose }: OrganizationFormProps) {
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit">Create Organization</Button>
+          <Button type="submit" disabled={createOrganization.isPending}>
+            {createOrganization.isPending ? 'Creating...' : 'Create Organization'}
+          </Button>
         </div>
       </form>
     </Form>
