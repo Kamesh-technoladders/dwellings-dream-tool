@@ -3,9 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { OrganizationFormData } from "@/types/organization";
+import { useNavigate } from "react-router-dom";
 
 export const useCreateOrganization = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async (formData: OrganizationFormData) => {
@@ -26,6 +28,7 @@ export const useCreateOrganization = (onSuccess?: () => void) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['organizations'] });
       toast.success('Organization created successfully');
+      navigate('/organizations');
       onSuccess?.();
     },
     onError: (error) => {

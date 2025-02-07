@@ -338,6 +338,7 @@ export type Database = {
           organization_type: string | null
           phone: string | null
           pincode: string | null
+          state: string | null
           status: Database["public"]["Enums"]["organization_status"]
           status_reason: string | null
           updated_at: string | null
@@ -356,6 +357,7 @@ export type Database = {
           organization_type?: string | null
           phone?: string | null
           pincode?: string | null
+          state?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
           status_reason?: string | null
           updated_at?: string | null
@@ -374,6 +376,7 @@ export type Database = {
           organization_type?: string | null
           phone?: string | null
           pincode?: string | null
+          state?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
           status_reason?: string | null
           updated_at?: string | null

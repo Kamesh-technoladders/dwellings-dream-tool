@@ -24,6 +24,7 @@ export const useOrganizations = () => {
         .select(`
           id,
           name,
+          organization_type,
           email,
           phone,
           address_line1,
