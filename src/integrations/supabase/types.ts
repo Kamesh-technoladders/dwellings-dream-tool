@@ -326,36 +326,54 @@ export type Database = {
       organizations: {
         Row: {
           address: string | null
+          address_line1: string | null
+          address_line2: string | null
+          city: string | null
           created_at: string
+          district: string | null
           email: string | null
           id: string
           last_status_change: string | null
           name: string
+          organization_type: string | null
           phone: string | null
+          pincode: string | null
           status: Database["public"]["Enums"]["organization_status"]
           status_reason: string | null
           updated_at: string | null
         }
         Insert: {
           address?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          city?: string | null
           created_at?: string
+          district?: string | null
           email?: string | null
           id?: string
           last_status_change?: string | null
           name: string
+          organization_type?: string | null
           phone?: string | null
+          pincode?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
           status_reason?: string | null
           updated_at?: string | null
         }
         Update: {
           address?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          city?: string | null
           created_at?: string
+          district?: string | null
           email?: string | null
           id?: string
           last_status_change?: string | null
           name?: string
+          organization_type?: string | null
           phone?: string | null
+          pincode?: string | null
           status?: Database["public"]["Enums"]["organization_status"]
           status_reason?: string | null
           updated_at?: string | null

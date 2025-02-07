@@ -27,9 +27,9 @@ const Organizations = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Type</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Phone</TableHead>
+                <TableHead>Address</TableHead>
                 <TableHead>City</TableHead>
                 <TableHead>State</TableHead>
               </TableRow>
@@ -38,9 +38,9 @@ const Organizations = () => {
               {organizations?.map((org) => (
                 <TableRow key={org.id}>
                   <TableCell>{org.name}</TableCell>
-                  <TableCell>{org.organization_type}</TableCell>
                   <TableCell>{org.email}</TableCell>
                   <TableCell>{org.phone}</TableCell>
+                  <TableCell>{org.address_line1}</TableCell>
                   <TableCell>{org.city}</TableCell>
                   <TableCell>{org.state}</TableCell>
                 </TableRow>
