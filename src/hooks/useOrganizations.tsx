@@ -31,7 +31,6 @@ export const useOrganizations = () => {
           address_line2,
           city,
           district,
-          state,
           pincode,
           status,
           created_at,

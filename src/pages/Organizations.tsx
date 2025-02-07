@@ -33,7 +33,7 @@ const Organizations = () => {
                 <TableHead>Phone</TableHead>
                 <TableHead>Address</TableHead>
                 <TableHead>City</TableHead>
-                <TableHead>State</TableHead>
+                <TableHead>District</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -62,7 +62,7 @@ const Organizations = () => {
                     <TableCell>{org.phone}</TableCell>
                     <TableCell>{org.address_line1}</TableCell>
                     <TableCell>{org.city}</TableCell>
-                    <TableCell>{org.state}</TableCell>
+                    <TableCell>{org.district}</TableCell>
                   </TableRow>
                 ))
               )}
