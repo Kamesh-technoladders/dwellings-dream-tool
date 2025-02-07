@@ -3,12 +3,12 @@ import { useOrganizations } from "@/hooks/useOrganizations";
 import { useOrganizationMutations } from "@/hooks/useOrganizationMutations";
 import { GlobalAdminActions } from "@/components/GlobalAdminActions";
 import { useState } from "react";
-import { OrganizationFormData } from "@/types/organization";
+import { OrganizationFormData, StatusChangeData } from "@/types/organization";
 import { OrganizationsTable } from "@/components/organizations/OrganizationsTable";
 
 const Organizations = () => {
   const { organizations, isLoading } = useOrganizations();
-  const { deleteOrganization, updateOrganization } = useOrganizationMutations();
+  const { deleteOrganization, updateOrganization, updateOrganizationStatus } = useOrganizationMutations();
   const [editingOrg, setEditingOrg] = useState<{ id: string; data: OrganizationFormData } | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -54,6 +54,13 @@ const Organizations = () => {
     setEditingOrg(null);
   };
 
+  const handleStatusChange = async (id: string, data: StatusChangeData) => {
+    await updateOrganizationStatus.mutateAsync({
+      id,
+      ...data,
+    });
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -64,6 +71,7 @@ const Organizations = () => {
         isLoading={isLoading}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onStatusChange={handleStatusChange}
         editingOrg={editingOrg}
         isEditDialogOpen={isEditDialogOpen}
         setIsEditDialogOpen={setIsEditDialogOpen}

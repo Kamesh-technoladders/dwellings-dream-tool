@@ -15,3 +15,9 @@ export interface OrganizationFormData {
   subscription_end_date?: string;
 }
 
+export type OrganizationStatus = 'active' | 'inactive' | 'restricted';
+
+export interface StatusChangeData {
+  status: OrganizationStatus;
+  reason: string;
+}
