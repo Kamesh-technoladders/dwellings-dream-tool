@@ -17,9 +17,10 @@ export const useOrganizationMutations = () => {
         })
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!updatedOrg) throw new Error('Organization not found');
       return updatedOrg;
     },
     onSuccess: () => {
@@ -34,11 +35,14 @@ export const useOrganizationMutations = () => {
 
   const updateOrganizationStatus = useMutation({
     mutationFn: async ({ id, status, reason }: { id: string } & StatusChangeData) => {
-      const { data: oldStatus } = await supabase
+      const { data: oldStatusData, error: fetchError } = await supabase
         .from('organizations')
         .select('status')
         .eq('id', id)
-        .single();
+        .maybeSingle();
+
+      if (fetchError) throw fetchError;
+      if (!oldStatusData) throw new Error('Organization not found');
 
       const { error: updateError } = await supabase
         .from('organizations')
@@ -51,18 +55,22 @@ export const useOrganizationMutations = () => {
 
       if (updateError) throw updateError;
 
-      // Log the status change in audit logs
+      const userId = (await supabase.auth.getUser()).data.user?.id;
+      if (!userId) throw new Error('User not authenticated');
+
       const { error: auditError } = await supabase
         .from('organization_audit_logs')
         .insert({
           organization_id: id,
-          changed_by: (await supabase.auth.getUser()).data.user?.id,
-          old_status: oldStatus?.status,
+          changed_by: userId,
+          old_status: oldStatusData.status,
           new_status: status,
           reason,
         });
 
       if (auditError) throw auditError;
+
+      return { success: true };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['organizations'] });
@@ -70,7 +78,8 @@ export const useOrganizationMutations = () => {
     },
     onError: (error) => {
       console.error('Error updating organization status:', error);
-      toast.error('Failed to update organization status');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update organization status';
+      toast.error(errorMessage);
     },
   });
 
@@ -81,10 +90,8 @@ export const useOrganizationMutations = () => {
         .delete()
         .eq('id', id);
 
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
+      if (error) throw error;
+      return { success: true };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['organizations'] });

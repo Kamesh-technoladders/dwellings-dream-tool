@@ -37,9 +37,7 @@ export function StatusManagementDialog({
     try {
       await onStatusChange({ status, reason });
       onClose();
-      toast.success("Organization status updated successfully");
     } catch (error) {
-      toast.error("Failed to update organization status");
       console.error("Status change error:", error);
     } finally {
       setIsSubmitting(false);

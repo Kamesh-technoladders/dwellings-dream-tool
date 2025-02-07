@@ -25,11 +25,11 @@ export const SubscriptionFields = ({ form }: SubscriptionFieldsProps) => {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                  <SelectItem value="trial">Trial</SelectItem>
-                  <SelectItem value="expired">Expired</SelectItem>
+                <SelectContent className="bg-white">
+                  <SelectItem value="active" className="hover:bg-primary hover:text-white">Active</SelectItem>
+                  <SelectItem value="inactive" className="hover:bg-primary hover:text-white">Inactive</SelectItem>
+                  <SelectItem value="trial" className="hover:bg-primary hover:text-white">Trial</SelectItem>
+                  <SelectItem value="expired" className="hover:bg-primary hover:text-white">Expired</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -49,10 +49,10 @@ export const SubscriptionFields = ({ form }: SubscriptionFieldsProps) => {
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="basic">Basic</SelectItem>
-                  <SelectItem value="premium">Premium</SelectItem>
-                  <SelectItem value="enterprise">Enterprise</SelectItem>
+                <SelectContent className="bg-white">
+                  <SelectItem value="basic" className="hover:bg-primary hover:text-white">Basic</SelectItem>
+                  <SelectItem value="premium" className="hover:bg-primary hover:text-white">Premium</SelectItem>
+                  <SelectItem value="enterprise" className="hover:bg-primary hover:text-white">Enterprise</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -93,4 +93,3 @@ export const SubscriptionFields = ({ form }: SubscriptionFieldsProps) => {
     </div>
   );
 };
-
